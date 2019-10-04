@@ -3,7 +3,7 @@ from app.db import DB, insert, insertmany, query_one, query, delete, update
 from app.elective.student.models import ElectiveSection, Elective, ElectiveTeacher, EnrollmentTime
 
 from config import Config
-from util import datetime_from_string, us_format
+from .util import datetime_from_string, us_format
 
 from datetime import datetime
 

@@ -20,7 +20,7 @@ def requires_token(f):
 
             g.user = get_user(int(decoded['usr_id']))
 
-            token = create_token(decoded['usr_id'], decoded['ip_address'].encode('utf-8'))
+            token = create_token(decoded['usr_id'], str(decoded['ip_address'].encode('utf-8')))
         else:
             token = None
 

@@ -4,9 +4,9 @@ elective_mod = NestableBlueprint('elective', __name__, url_prefix='/elective_enr
 
 import app.elective.views
 
-from admin import admin_mod
-from teacher import teacher_mod
-from student import student_mod
+from .admin import admin_mod
+from .teacher import teacher_mod
+from .student import student_mod
 
 elective_mod.register_blueprint(admin_mod)
 elective_mod.register_blueprint(teacher_mod)
