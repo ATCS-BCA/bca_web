@@ -10,9 +10,16 @@ My rewrite of the BCA web framework in Python Flask \
 5) Copy config.py to bca_web directory but do not add to GitHub.  (Ideally we will move this file up a directory soon.)
 
 ## Running in Pycharm
+
+## Windows Instructions
 set FLASK_APP=bca_web.py
 set FLASK_DEBUG=True
-run flask
+flask run
+
+## Mac Instructions
+export FLASK_APP=bca_web.py
+export FLASK_DEBUG=True
+flask run
 
 ## Alternative Command Line Setup / Running
 1. `cd bca_web` - Navigate to the folder
