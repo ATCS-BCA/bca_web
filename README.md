@@ -44,3 +44,12 @@ under the "bca_token" cookie.
   
 3. Upon every request, the cookie is verified, checked for timeout, and updated. 
 4. The current user and their corresponding JWT token can always be accessed with the request context variable, g, under the attributes user and token respectively. 
+
+## Contributors
+* Kate Kim
+* Eleana Pardo
+* Tara Yu
+* Daun Lee
+* Daniella Calle
+* Anthony Lekan
+* Aidan Glickman
