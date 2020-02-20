@@ -7,7 +7,7 @@ My rewrite of the BCA web framework in Python Flask \
 2) Clone the project from GitHub
 3) Create a Python 3.x virtual environment (do not add to Git!)
 4) From the terminal inside PyCharm run "pip install requirements.txt".  Alternatively, open requirements.txt and PyCharm will likely prompt you to install the requirements.
-5) Copy config.py to bca_web directory but do not add to GitHub.  (Ideally we will move this file up a directory soon.)
+5) Copy config.py to bca_web direectory but do not add to GitHub.  (Ideally we will move this file up a directory soon.)
 
 ## Running in Pycharm
 
