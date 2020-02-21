@@ -24,6 +24,6 @@ app.register_blueprint(bakesale_mod)
 
 @app.route('/')
 def index():
-    return redirect(url_for('dashboard.index '))
+    return redirect(url_for('dashboard.index'))
 
 #from errors import app
