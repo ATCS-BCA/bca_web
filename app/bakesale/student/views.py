@@ -1,7 +1,7 @@
-from app.elective.student import student_mod
+from app.bakesale.student import student_mod
 
 from app.shared.controllers import requires_token
-from app.elective.student.controllers import *
+from app.bakesale.student.controllers import *
 
 from flask import g, redirect, url_for, render_template, request, jsonify
 
@@ -21,65 +21,12 @@ from flask import g, redirect, url_for, render_template, request, jsonify
 @student_mod.before_request
 @requires_token
 def check_teacher():
-    if g.user.get_role('ELEN') != 'STD':
-        return redirect(url_for('elective'))
+    if g.user.get_role('BAKE') != 'STD':
+        return redirect(url_for('bakesale'))
 
 # pages
 
 # A route for the student_mod app
 @student_mod.route('/')
 def index():
-    enroll_info = get_enrollment_time(g.user.get_grade_level())
-
-    enrolled_sections = []
-    available_sections = []
-
-    if not enroll_info.start_time is None:
-
-        enrolled_sections = get_enrolled_sections(g.user.get_id(), enroll_info.course_year, enroll_info.tri_nbr)
-        available_sections = get_sections(g.user.get_id(), enroll_info.course_year, enroll_info.tri_nbr)
-
-    return render_template("elective/student/index.html", sections=available_sections, enroll_info=enroll_info, enrolled_sections=enrolled_sections)
-
-@student_mod.route('/enroll/<int:id>', methods=['PUT'])
-def enroll(id):
-    data = request.get_json(force=True, silent=True)
-
-    section_id = id
-    usr_id = data['usr_id']
-    will_enroll = data['enroll']
-
-    if enrollment_open(g.user.get_grade_level()):
-        if will_enroll:
-            if not is_section_full(section_id):
-                enroll_user(usr_id, section_id)
-
-                return jsonify({"has_enrolled": True, "Error": None})
-
-            else:
-                return jsonify({"has_enrolled": False, "Error": "Elective Section Full."})
-        else:
-            drop_section(usr_id, section_id)
-            return jsonify({"has_enrolled": False, "Error": None})
-
-    else:
-        return jsonify({"has_enrolled": False, "Error": "Enrollment Not Open"})
-
-
-@student_mod.route('/enroll/update', methods=['PUT'])
-def ping():
-    data = request.get_json(force=True, silent=True)
-
-    section_ids = data['section_ids']
-
-    if(section_ids):
-
-        amount_left = {}
-
-        for i in range(len(section_ids)):
-            amount_left[section_ids[i]] = get_amount_left(section_ids[i])
-
-        return jsonify(amount_left)
-
-    else:
-        return jsonify({"Error": "Invalid parameters"})
+    return render_template("bakesale/student/index.html", bakesales=get_all_bakesales())
