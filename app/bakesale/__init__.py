@@ -1,8 +1,8 @@
 from app.shared.models import NestableBlueprint
 
-bakesale_mod = NestableBlueprint('bakesale', __name__, url_prefix='/bakesale_register')
+bakesale_mod = NestableBlueprint('bakesale', __name__, url_prefix='/bakesale')
 
-import app.elective.views
+import app.bakesale.views
 
 from .admin import admin_mod
 from .teacher import teacher_mod

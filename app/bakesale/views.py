@@ -11,7 +11,7 @@ def check_auth():
 
 @bakesale_mod.route('/')
 def index():
-    type_code = g.user.get_role('ELEN')
+    type_code = g.user.get_role('BAKE')
 
     if type_code == 'STD':
         return redirect(url_for('bakesale_student.index'))

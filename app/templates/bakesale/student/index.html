@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+    {{ super() }}
+
+    <script type="text/javascript" src="{{ url_for('static', filename='alertifyjs/alertify.min.js') }}"></script>
+{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='alertifyjs/css/alertify.min.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='alertifyjs/css/themes/default.css') }}"/>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elective/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elective/student/main.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elective/teacher/create/main.css') }}">
+
+{% endblock %}
+
+{% block content %}
+
+    <div class="center-align">
+        <h1 class="center-align black-text title">Upcoming</h1>
+    </div>
+
+    <div class="row">
+        {% for bakesale in bakesales %}
+            <div class="col s3">
+                <div class="card blue-grey darken-1">
+                    <div class="card-content white-text">
+                      <span class="card-title">Day + Date</span>
+                      <p>
+                        <tr id="{{ bakesale.id }}">
+                            <td>{{ bakesale.group_name }}</td>
+                        </tr>
+                      </p>
+                    </div>
+                  </div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+{% endblock %}
