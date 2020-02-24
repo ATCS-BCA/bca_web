@@ -9,82 +9,73 @@
 
     <div class="container">
 
+    <h4 class="center-align">My Clubs</h4>
 
-    <h3 class="center-align">TEACHER</h3>
-    <ul class="collection with-header">
+    <table class="highlight">
+        <thead>
+          <tr>
+              <th>Club Name</th>
+              <th>Day</th>
+              <th>Students Enrolled</th>
+              <th>Actions</th>
+          </tr>
+        </thead>
 
-        <a href="mimic_user" class="collection-item avatar">
-            <i class="material-icons circle red">person</i>
-            <h6 class="title">Mimic User</h6>
-            <p class="small-text">Log in as any user in the database and use the app as if you were them.</p>
-        </a>
+        <!-- hardcoding for now, will eventually pull from database -->
+        <tbody>
+            <tr>
+                <td>Club #1</td>
+                <td>Monday</td>
+                <td>5</td>
+                <td><a href=""><i class="material-icons" style="cursor:pointer">mode_edit</i></a>
+                <a href=""> <i class="material-icons" >person_add</i></a></td>
+            </tr>
+            <tr>
+                <td>Club #2</td>
+                <td>Tuesday</td>
+                <td>12</td>
+                <td><a href=""><i class="material-icons" style="cursor:pointer">mode_edit</i></a>
+                <a href=""> <i class="material-icons" >person_add</i></a></td>
+            </tr>
+        </tbody>
+    </table>
 
-        <a href="audit_viewer" class="collection-item avatar">
-            <i class="material-icons circle red">edit</i>
-            <h6 class="title">Audit Viewer</h6>
-            <p class="small-text">View all database audits from the past week.</p>
-        </a>
+    <h4 class="center-align">Proposed Clubs</h4>
 
-        <a href="log_viewer" class="collection-item avatar">
-            <i class="material-icons circle red">report_problem</i>
-            <h6 class="title">Log Viewer</h6>
-            <p class="small-text">View the application log.</p>
-        </a>
+    <table class="highlight">
+        <thead>
+          <tr>
+              <th>Club Name</th>
+              <th>Student</th>
+              <th>Date Proposed</th>
+              <th>Actions</th>
+          </tr>
+        </thead>
 
-    </ul>
+        <!-- again, hardcoding for now, but we will eventually pull from database -->
+        <tbody>
+            <tr>
+                <td>Club #1</td>
+                <td>Kate Kim</td>
+                <td>September 6, 2019</td>
+                <td><a href=""><i class="material-icons" style="cursor:pointer">info_outline</i></a>
+                <a href=""> <i class="material-icons" >check</i></a>
+                <a href=""> <i class="material-icons" >clear</i></a></td>
+            </tr>
+            <tr>
+                <td>Club #2</td>
+                <td>Daniella Calle</td>
+                <td>September 20, 2019</td>
+                <td><a href=""><i class="material-icons" style="cursor:pointer">info_outline</i></a>
+                <a href=""> <i class="material-icons" >check</i></a>
+                <a href=""> <i class="material-icons" >clear</i></a></td>
+            </tr>
+        </tbody>
+    </table>
 
-
-
-
-
-    <h3 class="center-align">Admin Tools</h3>
-    <ul class="collection with-header">
-
-        <a href="mimic_user" class="collection-item avatar">
-            <i class="material-icons circle red">person</i>
-            <h6 class="title">Mimic User</h6>
-            <p class="small-text">Log in as any user in the database and use the app as if you were them.</p>
-        </a>
-
-        <a href="audit_viewer" class="collection-item avatar">
-            <i class="material-icons circle red">edit</i>
-            <h6 class="title">Audit Viewer</h6>
-            <p class="small-text">View all database audits from the past week.</p>
-        </a>
-
-        <a href="log_viewer" class="collection-item avatar">
-            <i class="material-icons circle red">report_problem</i>
-            <h6 class="title">Log Viewer</h6>
-            <p class="small-text">View the application log.</p>
-        </a>
-
-        <a href="signup_dates" class="collection-item avatar">
-            <i class="material-icons circle red">access_time</i>
-            <h6 class="title">Signup Dates</h6>
-            <p class="small-text">View and edit signup deadlines by grade.</p>
-        </a>
-
-        <a href="roles" class="collection-item avatar">
-            <i class="material-icons circle red">person_add</i>
-            <h6 class="title">Roles</h6>
-            <p class="small-text">Set and manage roles for projects.</p>
-        </a>
-
-        <a href="variables" class="collection-item avatar">
-            <i class="material-icons circle red">view_quilt</i>
-            <h6 class="title">Variables</h6>
-            <p class="small-text">Set and manage variables for projects.</p>
-        </a>
-
-
-        <!--<a href="roles" class="collection-item avatar">
-            <i class="material-icons circle red">person_add</i>
-            <h6 class="title">Roles</h6>
-            <p class="small-text">Set roles for proctoring.</p>
-        </a>-->
+    <!-- probs will remove soon  -->
 
 
-    </ul>
 </div>
 
 {% endblock %}
