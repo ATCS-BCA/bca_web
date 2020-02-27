@@ -19,6 +19,9 @@ app.register_blueprint(board_mod)
 from app.elective import elective_mod
 app.register_blueprint(elective_mod)
 
+from app.mclub import mclub_mod
+app.register_blueprint(mclub_mod)
+
 from app.bakesale import bakesale_mod
 app.register_blueprint(bakesale_mod)
 
