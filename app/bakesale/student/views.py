@@ -29,4 +29,4 @@ def check_teacher():
 # A route for the student_mod app
 @student_mod.route('/')
 def index():
-    return render_template("bakesale/student/index.html", bakesales=get_all_bakesales())
+    return render_template("bakesale/student/index.html", bakesales=get_next_bakesales())
