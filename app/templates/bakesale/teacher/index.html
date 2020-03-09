@@ -1,10 +1,72 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block scripts %}
+    {{ super() }}
+
+    <script type="text/javascript" src="{{ url_for('static', filename='alertifyjs/alertify.min.js') }}"></script>
+{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='alertifyjs/css/alertify.min.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='alertifyjs/css/themes/default.css') }}"/>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elective/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elective/student/main.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elective/teacher/create/main.css') }}">
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="col s12">
+        <ul class="tabs tabs-fixed-width" style="overflow-x: hidden !important;">
+            <li class="tab" onclick="event.stopPropagation(); location.href='index.php?action=list_selected_tests&active=0'"><a class="active" href="#selected">All Bakesales</a></li>
+            <li class="tab" onclick="event.stopPropagation(); location.href='index.php?action=list_selected_tests&sort=0&active=1'"><a class="" href="#available">My Bakesales</a></li>
+        </ul>
+    </div>
+
+    <div class="container-inner">
+        <div id="selected" class="col s12">
+            <table class="striped">
+                <thead>
+                    <tr>
+                        <th>Club</th>
+                        <th>Advisor</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+    <div style="display: block" id="available" class="col s12">
+        <table class="highlight">
+            <thead>
+                <tr>
+                    <th><a href="index.php?action=list_selected_tests&active=1&sort=4&order=1">Date</a></th>
+                    <th><a href="index.php?action=list_selected_tests&active=1&sort=3&order=1">Mods</a></th>
+                    <th><a href="index.php?action=list_selected_tests&active=1&sort=1&order=1">Test Name</a></th>
+                    <th><a href="index.php?acton=list_selected_tests&active=1&sort=8&order=1">Room</a></th>
+                    <th><a href="index.php?action=list_selected_tests&active=1&sort=5&order=1">Remaining</a></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr class="clickable-row addtest" onclick="if(this.style.backgroundColor!='rgb(220, 220, 220)'){ add(54, 1068, 1); this.style.backgroundColor = '#DCDCDC';} else {del(54, 1068, 1); this.style.backgroundColor='#f7f8f9';}">
+                    <td>Apr 20, 2020 (Mon)</td>
+                    <td>1-3</td>
+                    <td>NJSLA - ELA Unit 1 and 2, Gr 10</td>
+                    <td>Gym</td>
+                    <td>5</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

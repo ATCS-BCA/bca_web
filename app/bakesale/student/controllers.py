@@ -2,12 +2,11 @@ from app.db import DB, insert, insertmany, query_one, query, delete, update
 
 from app.bakesale.student.models import Bakesale
 
-from config import Config
 from .util import datetime_from_string, us_format
 
 from datetime import datetime
 
-# Get all current bakesale within 5 days of the given day
+# Get all current elective sections for a tri/year
 def get_all_bakesales():
 
     bakesales = query(DB.BAKESALE, "SELECT bakesale_id, group_name, group_size, teacher_id, requested_day, items_desc, date, bakesale.status_code, description "
@@ -36,6 +35,14 @@ def get_all_bakesales():
 
     return e_bakesales
 
-# Returns the current school year formatted in "YEAR-END_YEAR" form
-def get_current_year():
-    return '%d' % (datetime.utcnow().year)
+# Temporary solution for getting the corresponding times for a section
+def get_current_date():
+    d = datetime.datetime.today()
+    return d
+
+
+# Temporary solution for getting the corresponding times for a section
+def get_next_bakesales():
+    result = query(DB.BAKESALE, "SELECT * FROM bakesale WHERE date >= " + get_current_date() + " LIMIT 5")
+    return result
+
