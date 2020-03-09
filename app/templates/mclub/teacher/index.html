@@ -20,23 +20,16 @@
               <th>Actions</th>
           </tr>
         </thead>
-
-        <!-- hardcoding for now, will eventually pull from database -->
         <tbody>
+            {% for club in clubs %}
             <tr>
-                <td>Club #1</td>
-                <td>Monday</td>
-                <td>5</td>
+                <td>{{club.name}}</td>
+                <td>{{club.day}}</td>
+                <td>{{club.enrollment_count}}</td>
                 <td><a href=""><i class="material-icons" style="cursor:pointer">mode_edit</i></a>
                 <a href=""> <i class="material-icons" >person_add</i></a></td>
             </tr>
-            <tr>
-                <td>Club #2</td>
-                <td>Tuesday</td>
-                <td>12</td>
-                <td><a href=""><i class="material-icons" style="cursor:pointer">mode_edit</i></a>
-                <a href=""> <i class="material-icons" >person_add</i></a></td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
 

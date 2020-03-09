@@ -14,6 +14,7 @@ class DB(Enum):
     SEN_EXP = "atcsdevb_dev_senexp"
     ELECTIVE="atcsdevb_dev_electives"
     BAKESALE="atcsdevb_dev_bake_sale"
+    CLUBS="atcsdevb_dev_clubs"
 
     def __str__(self):
         return str(self.value)
