@@ -1,6 +1,7 @@
 from app.mclub.teacher import teacher_mod
 
 from app.shared.controllers import requires_token
+from app.mclub.teacher.controllers import *
 
 from flask import g, redirect, url_for, render_template, request, jsonify, make_response
 
@@ -13,5 +14,5 @@ def check_teacher():
 
 @teacher_mod.route('/')
 def index():
-    return render_template("./mclub/teacher/index.html")
+    return render_template("./mclub/teacher/index.html", clubs=get_clubs())
 
