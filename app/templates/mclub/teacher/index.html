@@ -23,10 +23,12 @@
         <tbody>
             {% for club in clubs %}
             <tr>
-                <td>{{club.name}}</td>
-                <td>{{club.day}}</td>
-                <td>{{club.enrollment_count}}</td>
-                <td><a href=""><i class="material-icons" style="cursor:pointer">mode_edit</i></a>
+                <td>{{ club.name }}</td>
+                <td>{{ club.day }}</td>
+                <td>{{ club.enrollment_count }}</td>
+
+                <td><a href=""><i class="material-icons" style="cursor:pointer">info_outline</i></a>
+                    <a href=""><i class="material-icons" style="cursor:pointer">mode_edit</i></a>
                 <a href=""> <i class="material-icons" >person_add</i></a></td>
             </tr>
             {% endfor %}
@@ -47,22 +49,18 @@
 
         <!-- again, hardcoding for now, but we will eventually pull from database -->
         <tbody>
+            {% for p in proposals %}
             <tr>
-                <td>Club #1</td>
-                <td>Kate Kim</td>
-                <td>September 6, 2019</td>
+                <td>{{ p.name }}</td>
+                <td>{{ "this isn't quite figured out yet" }}</td>
+                <td>{{ p.date  }}</td> <!-- this will need some Figuring Out in terms of formatting -->
+
                 <td><a href=""><i class="material-icons" style="cursor:pointer">info_outline</i></a>
-                <a href=""> <i class="material-icons" >check</i></a>
-                <a href=""> <i class="material-icons" >clear</i></a></td>
+                    <a href=""><i class="material-icons" style="cursor:pointer">mode_edit</i></a>
+                <a href=""> <i class="material-icons" >person_add</i></a></td>
             </tr>
-            <tr>
-                <td>Club #2</td>
-                <td>Daniella Calle</td>
-                <td>September 20, 2019</td>
-                <td><a href=""><i class="material-icons" style="cursor:pointer">info_outline</i></a>
-                <a href=""> <i class="material-icons" >check</i></a>
-                <a href=""> <i class="material-icons" >clear</i></a></td>
-            </tr>
+            {% endfor %}
+
         </tbody>
     </table>
 

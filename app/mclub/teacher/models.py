@@ -10,3 +10,11 @@ class Club(object):
         self.enrollment_count = enrollment_count
 
 
+class Proposal(object):
+    def __init__(self, id, name, desc, date):
+        self.id = id
+        self.name = name
+        self.description = desc
+        self.date = date
+
+
