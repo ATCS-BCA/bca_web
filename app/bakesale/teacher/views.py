@@ -30,7 +30,7 @@ def check_teacher():
 # A route for the teacher_mod app
 @teacher_mod.route('/')
 def index():
-    return render_template("bakesale/teacher/index.html", bakesales=get_all_bakesales())
+    return render_template("bakesale/teacher/index.html", bakesales=get_all_bakesales(), teacher_bakesales=get_teacher_bakesales(14))
 
 @teacher_mod.route('/create', methods=['GET', 'POST'])
 @register_breadcrumb(teacher_mod, ".create", "Create Bakesale")

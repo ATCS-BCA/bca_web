@@ -59,7 +59,7 @@ def get_teacher_bakesales(teacher_id):
         status_code = bakesale[7]
         status_desc = bakesale[8]
 
-        bakesale = Bakesale(bakesale_id, group_name, group_size, items_desc, date)
+        bakesale = Bakesale(bakesale_id, teacher_id, group_name, group_size, items_desc, date)
 
         e_bakesales.append(bakesale)
 
