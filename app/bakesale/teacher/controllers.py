@@ -10,9 +10,10 @@ from datetime import datetime
 # Get all current bakesale within 5 days of the given day
 def get_all_bakesales():
 
-    bakesales = query(DB.BAKESALE, "SELECT bakesale_id, group_name, group_size, teacher_id, requested_day, items_desc, date, bakesale.status_code, description "
-                                        " FROM bakesale, status "
+    bakesales = query(DB.BAKESALE, "SELECT bakesale_id, group_name, group_size, teacher_id, requested_day, items_desc, date, bakesale.status_code, description, CONCAT(t.usr_last_name, ', ', t.usr_first_name) as teacher_name "
+                                        " FROM bakesale, status, user t "
                                         " where bakesale.status_code = status.status_code "
+                                        " and bakesale.teacher_id = t.usr_id "
                                         " order by bakesale_id")
 
     e_bakesales = []
@@ -29,8 +30,9 @@ def get_all_bakesales():
         date = bakesale[6]
         status_code = bakesale[7]
         status_desc = bakesale[8]
+        teacher_name = bakesale[9]
 
-        bakesale = Bakesale(bakesale_id, teacher_id, group_name, group_size, items_desc, date)
+        bakesale = Bakesale(bakesale_id, teacher_id, group_name, group_size, items_desc, date, teacher_name)
 
         e_bakesales.append(bakesale)
 
@@ -38,10 +40,12 @@ def get_all_bakesales():
 
 def get_teacher_bakesales(teacher_id):
 
-    bakesales = query(DB.BAKESALE, "SELECT bakesale_id, group_name, group_size, teacher_id, requested_day, items_desc, date, bakesale.status_code, description "
-                                        " FROM bakesale, status "
+    bakesales = query(DB.BAKESALE, "SELECT bakesale_id, group_name, group_size, teacher_id, requested_day, items_desc, date, bakesale.status_code, description, CONCAT(t.usr_last_name, ', ', t.usr_first_name) as teacher_name "
+                                        " FROM bakesale, status, user t "
                                         " where bakesale.status_code = status.status_code "
                                         " and teacher_id = bakesale.teacher_id "
+                                        " and bakesale.teacher_id = t.usr_id "
+
                                         " order by bakesale_id")
 
     e_bakesales = []
@@ -58,8 +62,9 @@ def get_teacher_bakesales(teacher_id):
         date = bakesale[6]
         status_code = bakesale[7]
         status_desc = bakesale[8]
+        teacher_name = bakesale[9]
 
-        bakesale = Bakesale(bakesale_id, teacher_id, group_name, group_size, items_desc, date)
+        bakesale = Bakesale(bakesale_id, teacher_id, group_name, group_size, items_desc, date, teacher_name)
 
         e_bakesales.append(bakesale)
 

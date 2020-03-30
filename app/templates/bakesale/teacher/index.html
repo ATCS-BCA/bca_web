@@ -43,7 +43,7 @@
                 {% for bakesale in bakesales %}
                       <tr id="{{ bakesale.bakesale_id }}">
                           <td>{{ bakesale.group_name }}</td>
-                          <td>{{ bakesale.teacher_id }}</td>
+                          <td>{{ bakesale.teacher_name }}</td>
                           <td>{{ bakesale.date }}</td>
                       </tr>
                 {% endfor %}
@@ -65,7 +65,7 @@
                 {% for bakesale in teacher_bakesales %}
                       <tr id="{{ bakesale.bakesale_id }}">
                           <td>{{ bakesale.group_name }}</td>
-                          <td>{{ bakesale.teacher_id }}</td>
+                          <td>{{ bakesale.teacher_name }}</td>
                           <td>{{ bakesale.date }}</td>
                       </tr>
                 {% endfor %}
