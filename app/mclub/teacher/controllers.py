@@ -17,11 +17,11 @@ def get_clubs():
         club_advisor_id = club[2] # need to see if usr_id matches advisor_id
         club_day = club[3]
         club_room_nbr = club[4]
-        club_desc = club[5]
+        club_description = club[5]
         club_max_nbr = club[6]
         club_enrollment_count = club[7]
 
-        c = Club(club_name, club_day, club_id, club_desc, club_max_nbr, club_room_nbr, club_enrollment_count)
+        c = Club(club_name, club_day, club_id, club_description, club_max_nbr, club_room_nbr, club_enrollment_count)
 
         all_clubs.append(c)
 

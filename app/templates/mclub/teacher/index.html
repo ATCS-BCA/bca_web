@@ -5,6 +5,16 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/elective/admin/main.css') }}">
 {% endblock %}
 
+{% block scripts %}
+    {{ super() }}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.modal').modal();
+        });
+
+    </script>
+{% endblock %}
+
 {% block content %}
 
     <div class="container">
@@ -27,10 +37,18 @@
                 <td>{{ club.day }}</td>
                 <td>{{ club.enrollment_count }}</td>
 
-                <td><a href=""><i class="material-icons" style="cursor:pointer">info_outline</i></a>
+                <td><a class="modal-trigger" href="#modal{{ club.id }}"><i class="material-icons" style="cursor:pointer">info_outline</i></a>
                     <a href=""><i class="material-icons" style="cursor:pointer">mode_edit</i></a>
                 <a href=""> <i class="material-icons" >person_add</i></a></td>
             </tr>
+
+            <div id="modal{{ club.id }}" class="modal">
+                <div class="modal-content">
+                    <h4>{{ club.name }}</h4>
+                    <p>{{ club.description }}</p>
+                    <p>{{ "should also include the student leader and other relevant info" }}</p>
+                </div>
+            </div>
             {% endfor %}
         </tbody>
     </table>
@@ -47,26 +65,32 @@
           </tr>
         </thead>
 
-        <!-- again, hardcoding for now, but we will eventually pull from database -->
         <tbody>
             {% for p in proposals %}
             <tr>
                 <td>{{ p.name }}</td>
                 <td>{{ "this isn't quite figured out yet" }}</td>
                 <td>{{ p.date  }}</td> <!-- this will need some Figuring Out in terms of formatting -->
-
-                <td><a href=""><i class="material-icons" style="cursor:pointer">info_outline</i></a>
-                    <a href=""><i class="material-icons" style="cursor:pointer">mode_edit</i></a>
+                <td><a class="modal-trigger" href="#modal0{{ p.id }}"><i class="material-icons" style="cursor:pointer">info_outline</i></a>
                 <a href=""> <i class="material-icons" >person_add</i></a></td>
             </tr>
+
+<!--             I DISCOVERED SOMETHING so i had to put a 0 in the #modal for proposals-->
+<!--             because if not then it would refer to the clubs modal since they same the same id -->
+<!--             so we'll have to make sure that there are either UNIQUE ID'S or keep the dummy number there-->
+
+            <div id="modal0{{ p.id }}" class="modal">
+                <div class="modal-content">
+                    <h4>{{ p.name }}</h4>
+                    <p>{{ p.description }}</p>
+                    <p>{{ "should also include the student who proposed it and other stuff" }}</p>
+                </div>
+            </div>
             {% endfor %}
 
         </tbody>
     </table>
-
-    <!-- probs will remove soon  -->
-
-
 </div>
 
 {% endblock %}
+
