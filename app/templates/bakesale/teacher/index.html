@@ -43,7 +43,7 @@
                 {% for bakesale in bakesales %}
                       <tr id="{{ bakesale.bakesale_id }}">
                           <td>{{ bakesale.group_name }}</td>
-                          <td>{{ bakesale.teacher_id }}</td>
+                          <td>{{ bakesale.teacher_name }}</td>
                           <td>{{ bakesale.date }}</td>
                       </tr>
                 {% endfor %}
@@ -62,10 +62,10 @@
                 </thead>
 
                 <tbody>
-                {% for bakesale in bakesales %}
+                {% for bakesale in teacher_bakesales %}
                       <tr id="{{ bakesale.bakesale_id }}">
                           <td>{{ bakesale.group_name }}</td>
-                          <td>{{ bakesale.teacher_id }}</td>
+                          <td>{{ bakesale.teacher_name }}</td>
                           <td>{{ bakesale.date }}</td>
                       </tr>
                 {% endfor %}
@@ -75,7 +75,9 @@
     </div>
 
     <div class="fixed-action-btn">
-        <a class="btn-floating btn-large red"><i class="large material-icons">add</i></a>
+        <a class="btn-floating btn-large red" href="{{ config.LOCAL_DOMAIN }}/bakesale/teacher/create">
+            <i class="large material-icons">add</i>
+        </a>
     </div>
 </div>
 
