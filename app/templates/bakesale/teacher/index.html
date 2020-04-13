@@ -1,10 +1,84 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block scripts %}
+    {{ super() }}
+
+    <script type="text/javascript" src="{{ url_for('static', filename='alertifyjs/alertify.min.js') }}"></script>
+{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='alertifyjs/css/alertify.min.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='alertifyjs/css/themes/default.css') }}"/>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elective/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elective/student/main.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elective/teacher/create/main.css') }}">
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="col s12">
+        <ul class="tabs tabs-fixed-width" style="overflow-x: hidden !important;">
+            <li class="tab"><a class="active" href="#selected">All Bakesales</a></li>
+            <li class="tab"><a class="" href="#available">My Bakesales</a></li>
+        </ul>
+    </div>
+
+    <div class="container-inner">
+        <div id="selected" class="col s12">
+            <table class="striped">
+                <thead>
+                    <tr>
+                        <th>Club</th>
+                        <th>Advisor</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for bakesale in bakesales %}
+                      <tr id="{{ bakesale.bakesale_id }}">
+                          <td>{{ bakesale.group_name }}</td>
+                          <td>{{ bakesale.teacher_name }}</td>
+                          <td>{{ bakesale.date }}</td>
+                      </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div style="display: block" id="available" class="col s12">
+            <table class="striped">
+                <thead>
+                    <tr>
+                        <th>Club</th>
+                        <th>Advisor</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for bakesale in teacher_bakesales %}
+                      <tr id="{{ bakesale.bakesale_id }}">
+                          <td>{{ bakesale.group_name }}</td>
+                          <td>{{ bakesale.teacher_name }}</td>
+                          <td>{{ bakesale.date }}</td>
+                      </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large red" href="{{ config.LOCAL_DOMAIN }}/bakesale/teacher/create">
+            <i class="large material-icons">add</i>
+        </a>
+    </div>
+</div>
+
+{% endblock %}
