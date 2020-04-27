@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elective/admin/main.css') }}">
+<!--    i am certain that we are stealing some styles from elective/admin BUT it's fine for now -->
+<!--    i think we just have to change the filename? i'm not sure. we'll see What Goes On -->
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script type="text/javascript">
+        function submit_form() {
+            let club_name = $('input[name="club_name').val();
+            let room_nbr = $('input[name="club_room_nbr').val();
+            let desc = $('textarea[name="club_desc').val();
+            let max_nbr = $('input[name="club_max_nbr').val();
+
+            if (!club_name || !room_nbr || !desc || !max_nbr)
+                Materialize.toast('Please Fill Out All Fields Before Submitting', 3000);
+            else
+                $('#edit_club').submit();
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+<form id="edit_club" method="post">
+        <div id="box" class="container">
+            <div class="row">
+                <div class="col s12 center-align">
+                    <h3 class="title" >Edit Club</h3>
+<!--                    style="margin-bottom: 25px"-->
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s6">
+                    <input id="club_name" name="club_name" type="text" value="{{ club.name }}">
+                    <label for="club_name">Club Name</label>
+                </div>
+                <div class="input-field col s3">
+                    <input id="club_room_nbr" name="club_room_nbr" type="text" value="{{ club.room_nbr }}">
+                    <label for="club_room_nbr">Room Number</label>
+                </div>
+<!--                gonna change this to be a drop down menu but i'm not sure if i should hardcode or not -->
+                <div class="input-field col s3">
+                    <input id="club_max_nbr" name="club_max_nbr" type="text" value="{{ club.max_nbr }}">
+                    <label for="club_max_nbr">Max Students</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s5">
+                    <input id="club_day" name="club_day" type="text" value="{{ club.day }}">
+                    <label for="club_day">Day of Week</label>
+                </div>
+<!--                issue here is How To Get The Student, for now the field is disabled -->
+                <div class="input-field col s7">
+                    <input id="club_student" name="club_student" type="text" value="didn't figure this out yet" disabled>
+                    <label for="club_student">Student</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <textarea id="club_desc" name="club_desc" class="materialize-textarea">{{ club.description }}</textarea>
+                    <label for="club_desc">Description</label>
+                </div>
+            </div>
+
+            <div class="row s1 center-align">
+                <a onclick="submit_form()" class="waves-effect waves-light btn light-blue accent-2" style=" margin-top: 15px; ">Save</a>
+            </div>
+        </div>
+    </form>
+
+
+{% endblock %}
+
