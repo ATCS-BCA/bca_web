@@ -11,7 +11,6 @@
         $(document).ready(function(){
             $('.modal').modal();
         });
-
     </script>
 {% endblock %}
 
@@ -37,8 +36,9 @@
                 <td>{{ club.day }}</td>
                 <td>{{ club.enrollment_count }}</td>
 
+<!--                this should basically call the edit function in views, i think?? -->
                 <td><a class="modal-trigger" href="#modal{{ club.id }}"><i class="material-icons" style="cursor:pointer">info_outline</i></a>
-                    <a href=""><i class="material-icons" style="cursor:pointer">mode_edit</i></a>
+                    <a href="{{ url_for('mclub_teacher.edit', id=club.id) }}"><i class="material-icons" style="cursor:pointer">mode_edit</i></a>
                 <a href=""> <i class="material-icons" >person_add</i></a></td>
             </tr>
 
