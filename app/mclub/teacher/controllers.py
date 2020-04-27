@@ -66,8 +66,9 @@ def get_club(club_id):
 
 # removed advisor_id & enrollment_count from the parameters/query bc teacher can't change those
 def edit_club(club_id, name, day, room_nbr, description, max_nbr):
-    info = "UPDATE club SET name = %s, day = %s, room_nbr = %s, description = %s, max_nbr = %s WHERE club_id = %s" % (name, day, room_nbr, description, max_nbr, club_id)
-    update(DB.CLUBS, info)
+    query = "UPDATE club SET name = %s, day = %s, room_nbr = %s, description = %s, max_nbr = %s WHERE club_id = %s"
+    params = [name, day, room_nbr, description, max_nbr, club_id]
+    update(DB.CLUBS, query, params)
 
     return False
 
