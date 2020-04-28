@@ -27,15 +27,16 @@
 
     <div class="row">
         {% for bakesale in bakesales %}
-            <div class="col s3">
+            <div id="{{bakesale[0]}}" class="col s3">
                 <div class="card blue-grey darken-1">
                     <div class="card-content white-text">
-                      <span class="card-title">Day + Date</span>
+                      <span class="card-title">{{bakesale[1]}}</span>
                       <p>
-                        <tr id="{{ bakesale.id }}">
-                            <td>{{ bakesale.group_name }}</td>
-                        </tr>
+                          {{bakesale[8]}}
                       </p>
+                        <p>
+                            {{"Items: " + bakesale[5]}}
+                        </p>
                     </div>
                   </div>
             </div>
