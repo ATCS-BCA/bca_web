@@ -15,4 +15,5 @@ def check_teacher():
 @student_mod.route('/')
 def index():
     return render_template("mclub/student/index.html", clubs=get_clubs())
-
+# i changed get_clubs() so that it takes a parameter user_id (which is g.user.get_id() )
+# so if you wanna get the student's id, use that method and if you wanna get their clubs, pass that into get_clubs()

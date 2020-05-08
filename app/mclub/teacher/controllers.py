@@ -2,14 +2,13 @@ from app.db import DB, insert, insertmany, query_one, query, delete, update
 from app.mclub.teacher.models import Club, Proposal
 
 
-def get_clubs():
+def get_clubs(usr_id):
     clubs = query(DB.CLUBS, "SELECT club_id, name, advisor_id, day, room_nbr, description, max_nbr, enrollment_count"
-                                        " FROM club " 
-                                        " order by club_id")
+                                        " FROM club "
+                            " WHERE advisor_id = %s"
+                            " order by club_id", [usr_id])
     # THIS QUERY IS QUESTIONABLE AT BEST. I WILL PROBABLY (MOST LIKELY) (LIKE DEFINITELY) HAVE TO FIX IT IN THE FUTURE
-    # here are some things i have to account for:
-    # get the clubs by the ID of the teacher
-    # also probably have to get the id of the student who proposed the club }
+    # probably have to get the id of the student who proposed the club
 
     all_clubs = []
 

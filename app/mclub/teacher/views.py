@@ -14,31 +14,24 @@ def check_teacher():
 
 @teacher_mod.route('/')
 def index():
-    return render_template("mclub/teacher/index.html", clubs=get_clubs(), proposals=get_proposals())
+    return render_template("mclub/teacher/index.html", clubs=get_clubs(g.user.get_id()), proposals=get_proposals())
 
 
-@teacher_mod.route('/edit/<int:id>', methods=['GET', 'POST'])
-# breadcrumbs?
-def edit(id):
-    club = get_club(id)
+@teacher_mod.route('/edit/<int:club_id>', methods=['GET', 'POST'])
+def edit(club_id):
+    club = get_club(club_id)
 
-    if club:
-        if request.method == 'POST':
-            name = request.form.get('club_name', None)
-            room_nbr = request.form.get('club_room_nbr', None)
-            max_nbr = request.form.get('club_max_nbr', None)
-            day = request.form.get('club_day', None)
-            description = request.form.get('club_desc', None)
+    # actually making changes
+    if request.method == 'POST':
+        name = request.form['club_name']
+        room_nbr = request.form['club_room_nbr']
+        max_nbr = request.form['club_max_nbr', None]
+        day = request.form['club_day', None]
+        description = request.form['club_desc', None]
 
-            if name or room_nbr or max_nbr or day or description:
-                edit_club(id, name, day, room_nbr, description, max_nbr)
+        exit()
+        edit_club(club_id, name, day, room_nbr, description, max_nbr)
+        # return render_template("mclub/teacher/index.html", clubs=get_clubs(), proposals=get_proposals())
+        return redirect(url_for('mclub_teacher.index'))
 
-            # send back to the index page
-            return render_template("mclub/teacher/index.html", clubs=get_clubs(), proposals=get_proposals())
-
-        else:
-            # if simply trying to see the edit page, not submitting changes
-            return render_template("mclub/teacher/edit.html", club=club)
-
-    else:  # error w/ the club
-        redirect(url_for('mclub_teacher.index'))
+    return render_template("mclub/teacher/edit.html", club=club)
