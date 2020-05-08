@@ -29,11 +29,12 @@ def check_teacher():
 
 # A route for the teacher_mod app
 @teacher_mod.route('/')
+@register_breadcrumb(teacher_mod, ".", "Bakesales")
 def index():
-    return render_template("bakesale/teacher/index.html", bakesales=get_all_bakesales(), teacher_bakesales=get_teacher_bakesales(1))
+    return render_template("bakesale/teacher/index.html", bakesales=get_all_bakesales(), teacher_bakesales=get_teacher_bakesales(g.user.get_id()))
 
 @teacher_mod.route('/create', methods=['GET', 'POST'])
-@register_breadcrumb(teacher_mod, ".create", "Create Bakesale")
+@register_breadcrumb(teacher_mod, ".create", "Request Bakesale")
 def create():
     if request.method == 'POST':
         group_name = request.form['group_name']
@@ -46,4 +47,4 @@ def create():
 
             return redirect(url_for('bakesale_teacher.index'))
 
-    return render_template("bakesale/teacher/create.html", teacher_bakesales=get_teacher_bakesales(1))
+    return render_template("bakesale/teacher/create.html", teacher_bakesales=get_teacher_bakesales(g.user.get_id()))
