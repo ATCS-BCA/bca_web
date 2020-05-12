@@ -3,7 +3,16 @@
 {% block scripts %}
     {{ super() }}
 
-    <script type="text/javascript" src="{{ url_for('static', filename='alertifyjs/alertify.min.js') }}"></script>
+    <script type="text/javascript">
+        function submit_form() {
+            let a = $('input[name="group_name"]').val();
+            let b = $('input[name="group_size"]').val();
+            let c = $('input[name="requested_day"]').val();
+            let d = $('input[name="items_desc"]').val();
+
+            $('#create_bakesale').submit();
+        }
+    </script>
 {% endblock %}
 
 {% block styles %}
@@ -21,33 +30,38 @@
 
 {% block content %}
 
-<div class="container">
-    <div class="center-align">
-        <h1 class="center-align black-text title">Request A Bakesale</h1>
-    </div>
+<form id="create_bakesale" method="post">
+    <div class="container">
+        <div class="center-align">
+            <h1 class="center-align black-text title">Request A Bakesale</h1>
+        </div>
 
-    <div class="row">
-        <form class="col s12">
-            <div class="row">
-                <div class="input-field col s6">
-                    <input placeholder="Placeholder" id="group_name" type="text" class="validate">
-                    <label for="group_name">Group Name</label>
-                </div>
+        <div class="row"></div>
+        <div class="row">
+            <div class="input-field col s5">
+                <input name="group_name" id="group_name" type="text" required class="validate">
+                <label for="group_name">Group Name</label>
             </div>
-            <div class="row">
-                <div class="input-field col s6">
-                    <input placeholder="Placeholder" id="group_size" type="text" class="validate">
-                    <label for="group_size">Group Size</label>
-                    <input placeholder="Placeholder" id="requested_day" type="text" class="validate">
-                    <label for="requested_day">Requested Day</label>
-                </div>
+            <div class="input-field col s5">
+                <input name="requested_day" placeholder="Tuesday, Thursday, etc." id="requested_day" type="text" required class="validate">
+                <label for="requested_day">Requested Day</label>
             </div>
-            <div class="row">
-                <div class="input-field col s12">
-                    <textarea id="items_desc" class="materialize-textarea"></textarea>
-                    <label for="items_desc">Description</label>
-                </div>
+            <div class="input-field col s2">
+                <input name="group_size" id="group_size" type="text" required class="validate">
+                <label for="group_size">Group Size</label>
             </div>
-        </form>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <textarea name="items_desc" placeholder="What kind of food will you bring?" id="items_desc" class="materialize-textarea"></textarea>
+                <label for="items_desc">Description</label>
+            </div>
+        </div>
+
+        <div class="center-align">
+            <button class="btn waves-effect waves-light" type="submit" name="submit">Submit</button>
+        </div>
     </div>
-</div>
+</form>
+
+{% endblock %}
