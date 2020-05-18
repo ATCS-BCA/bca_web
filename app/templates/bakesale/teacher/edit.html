@@ -21,6 +21,8 @@
 {% block content %}
 
 <form id="edit_bakesale" method="post">
+    <input type="hidden" name="bakesale_id" value="{{ bakesale.bakesale_id }}">
+
     <div class="container">
         <div class="center-align">
             <h1 class="center-align black-text title">Edit Bakesale</h1>
@@ -49,9 +51,8 @@
         </div>
 
         <div class="center-align">
-                <a class="waves-effect waves-light btn light-blue accent-2"
-                   href="{{ config.LOCAL_DOMAIN }}/bakesale/teacher/edit/{{ bakesale.bakesale_id }}">Save</a>
-            </div>
+            <button class="btn waves-effect waves-light" type="submit" name="submit">Submit</button>
+        </div>
     </div>
 </form>
 
