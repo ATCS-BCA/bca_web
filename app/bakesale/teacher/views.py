@@ -48,3 +48,21 @@ def create():
             return redirect(url_for('bakesale_teacher.index'))
 
     return render_template("bakesale/teacher/create.html", teacher_bakesales=get_teacher_bakesales(g.user.get_id()))
+
+@teacher_mod.route('/edit/<int:bakesale_id>', methods=['GET', 'POST'])
+@register_breadcrumb(teacher_mod, ".edit", "Edit Bakesale")
+def edit(bakesale_id):
+    bakesale = get_bakesale(bakesale_id)
+
+    if request.method == 'POST':
+        group_name = request.form['group_name']
+        group_size = request.form['group_size']
+        requested_day = request.form['requested_day']
+        items_desc = request.form.get('items_desc', None)
+        print("hello")
+
+        if group_name and group_size and requested_day and items_desc:
+            edit_bakesale(bakesale_id, group_name, group_size, items_desc, requested_day)
+            return redirect(url_for('bakesale_teacher.index'))
+
+    return render_template("bakesale/teacher/edit.html", bakesale=bakesale)

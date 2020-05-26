@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+    {{ super() }}
+
+{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='alertifyjs/css/alertify.min.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='alertifyjs/css/themes/default.css') }}"/>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elective/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elective/student/main.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elective/teacher/create/main.css') }}">
+
+{% endblock %}
+
+{% block content %}
+
+<form id="edit_bakesale" method="post">
+    <input type="hidden" name="bakesale_id" value="{{ bakesale.bakesale_id }}">
+
+    <div class="container">
+        <div class="center-align">
+            <h1 class="center-align black-text title">Edit Bakesale</h1>
+        </div>
+
+        <div class="row"></div>
+        <div class="row">
+            <div class="input-field col s5">
+                <input name="group_name" id="group_name" type="text" value="{{ bakesale.group_name }}" required class="validate">
+                <label for="group_name">Group Name</label>
+            </div>
+            <div class="input-field col s5">
+                <input name="requested_day" placeholder="Tuesday, Thursday, etc." id="requested_day" type="text" value="{{ bakesale.date }}" required class="validate">
+                <label for="requested_day">Requested Day</label>
+            </div>
+            <div class="input-field col s2">
+                <input name="group_size" id="group_size" type="text" value="{{ bakesale.group_size }}" required class="validate">
+                <label for="group_size">Group Size</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <textarea name="items_desc" placeholder="What kind of food will you bring?" id="items_desc" class="materialize-textarea">{{ bakesale.items_desc }}</textarea>
+                <label for="items_desc">Description</label>
+            </div>
+        </div>
+
+        <div class="center-align">
+            <button class="btn waves-effect waves-light" type="submit" name="submit">Submit</button>
+        </div>
+    </div>
+</form>
+
+{% endblock %}
