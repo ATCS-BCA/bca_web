@@ -52,6 +52,7 @@ def create():
 @teacher_mod.route('/edit/<int:bakesale_id>', methods=['GET', 'POST'])
 @register_breadcrumb(teacher_mod, ".edit", "Edit Bakesale")
 def edit(bakesale_id):
+    # bakesale_id = request.form['bakesale_id']
     bakesale = get_bakesale(bakesale_id)
 
     if request.method == 'POST':
@@ -59,7 +60,6 @@ def edit(bakesale_id):
         group_size = request.form['group_size']
         requested_day = request.form['requested_day']
         items_desc = request.form.get('items_desc', None)
-        print("hello")
 
         if group_name and group_size and requested_day and items_desc:
             edit_bakesale(bakesale_id, group_name, group_size, items_desc, requested_day)

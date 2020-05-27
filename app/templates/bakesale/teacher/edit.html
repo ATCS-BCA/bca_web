@@ -21,7 +21,7 @@
 {% block content %}
 
 <form id="edit_bakesale" method="post">
-    <input type="hidden" name="bakesale_id" value="{{ bakesale.bakesale_id }}">
+{#    <input type="hidden" name="bakesale_id" id="bakesale_id" value="{{ bakesale.bakesale_id }}">#}
 
     <div class="container">
         <div class="center-align">
@@ -35,7 +35,7 @@
                 <label for="group_name">Group Name</label>
             </div>
             <div class="input-field col s5">
-                <input name="requested_day" placeholder="Tuesday, Thursday, etc." id="requested_day" type="text" value="{{ bakesale.date }}" required class="validate">
+                <input name="requested_day" placeholder="Tuesday, Thursday, etc." id="requested_day" type="text" value="{{ bakesale.requested_day }}" required class="validate">
                 <label for="requested_day">Requested Day</label>
             </div>
             <div class="input-field col s2">
