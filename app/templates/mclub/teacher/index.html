@@ -10,6 +10,7 @@
     <script type="text/javascript">
         $(document).ready(function(){
             $('.modal').modal();
+            $('.collapsible').collapsible();
         });
     </script>
 {% endblock %}
@@ -18,29 +19,33 @@
 
     <div class="container">
 
-    <h4 class="center-align">My Clubs</h4>
+        <!--        should we also include directions, like we did in projects? what to do with these? should we include -->
+        <!--        an option for the admin to approve a club? -->
+        <h4 class="center-align">My Clubs</h4>
 
-    <table class="highlight">
-        <thead>
-          <tr>
-              <th>Club Name</th>
-              <th>Day</th>
-              <th>Students Enrolled</th>
-              <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
+        <table class="highlight">
+            <thead>
+            <tr>
+                <th>Club Name</th>
+                <th>Day</th>
+                <th>Students Enrolled</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
             {% for club in clubs %}
             <tr>
                 <td>{{ club.name }}</td>
                 <td>{{ club.day }}</td>
                 <td>{{ club.enrollment_count }}</td>
 
-<!--                this should basically call the edit function in views, i think?? -->
-                <td><a class="modal-trigger" href="#modal{{ club.id }}"><i class="material-icons" style="cursor:pointer">info_outline</i></a>
-                    <a href="{{ url_for('mclub_teacher.edit', club_id=club.id) }}"><i class="material-icons"
-                                                                                      style="cursor:pointer">mode_edit</i></a>
-                <a href=""> <i class="material-icons" >person_add</i></a></td>
+                <!--                this should basically call the edit function in views, i think?? -->
+                <td><a class="modal-trigger" href="#modal{{ club.id }}"><i class="material-icons"
+                                                                           style="cursor:pointer">info_outline</i></a>
+                    <a href="{{ url_for('mclub_teacher.edit', id=club.id) }}"><i class="material-icons"
+                                                                                 style="cursor:pointer">mode_edit</i></a>
+                    <a href="{{ url_for('mclub_teacher.rosters', id=club.id) }}"><i
+                            class="material-icons">person_add</i></a></td>
             </tr>
 
             <div id="modal{{ club.id }}" class="modal">
@@ -51,47 +56,89 @@
                 </div>
             </div>
             {% endfor %}
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-    <h4 class="center-align">Proposed Clubs</h4>
+        <!--        i forgot how to do styling please don't kill me!!!!!!!!!!! also i might change to a floating circular one-->
+        <div class="center-align">
+            <a class="waves-effect waves-light btn-large light-blue accent-2" style="margin-top: 20px"
+               href="{{ url_for('mclub_teacher.add_club')}}">Add Club</a>
+        </div>
 
-    <table class="highlight">
-        <thead>
-          <tr>
-              <th>Club Name</th>
-              <th>Student</th>
-              <th>Date Proposed</th>
-              <th>Actions</th>
-          </tr>
-        </thead>
+        <div>
+            <ul class="collapsible" data-collapse="accordion" style="margin-top:20px;">
+                <li>
+                    <div class="collapsible-header active"><i class="material-icons">error_outline</i>Please Read??!!
+                    </div>
+                    <div class="collapsible-body">You can use this app to add and manage clubs that you supervise.
+                        <strong>If you are adding a club, please make sure it meets the requirements listed
+                            below.</strong>
+                        <br>Click on the pencil icon to edit a club, the person icon to manage students that are
+                        enrolled
+                        in your club, or the "add club" button to make a new club.
+                        <br>If you have questions about clubs, please contact Stephen Kaplan at stekap@bergen.org. For
+                        questions
+                        about the website, please contact Bryan Respass at bryres@bergen.org.
+                    </div>
+                    <!--                is it ok to use <br> and <strong> here or is that Taboo -->
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">brightness_low</i>Morning Clubs
+                        Requirements
+                    </div>
+                    <div class="collapsible-body">For morning clubs, you must have a student leader and at least
+                        3 students who are committed to participating. And other stuff, but I forget.
+                    </div>
+                </li>
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">grade</i>Wednesday Clubs Requirements
+                    </div>
+                    <div class="collapsible-body">For Wednesday clubs, you must do something. I forget what.</div>
+                </li>
+            </ul>
+        </div>
 
-        <tbody>
-            {% for p in proposals %}
-            <tr>
-                <td>{{ p.name }}</td>
-                <td>{{ "this isn't quite figured out yet" }}</td>
-                <td>{{ p.date  }}</td> <!-- this will need some Figuring Out in terms of formatting -->
-                <td><a class="modal-trigger" href="#modal0{{ p.id }}"><i class="material-icons" style="cursor:pointer">info_outline</i></a>
-                <a href=""> <i class="material-icons" >person_add</i></a></td>
-            </tr>
 
-<!--             I DISCOVERED SOMETHING so i had to put a 0 in the #modal for proposals-->
-<!--             because if not then it would refer to the clubs modal since they same the same id -->
-<!--             so we'll have to make sure that there are either UNIQUE ID'S or keep the dummy number there-->
+        <!--    this is the code for the proposals, which we are not including in this version -->
 
-            <div id="modal0{{ p.id }}" class="modal">
-                <div class="modal-content">
-                    <h4>{{ p.name }}</h4>
-                    <p>{{ p.description }}</p>
-                    <p>{{ "should also include the student who proposed it and other stuff" }}</p>
-                </div>
-            </div>
-            {% endfor %}
+        <!--    <h4 class="center-align">Proposed Clubs</h4>-->
 
-        </tbody>
-    </table>
-</div>
+        <!--    <table class="highlight">-->
+        <!--        <thead>-->
+        <!--          <tr>-->
+        <!--              <th>Club Name</th>-->
+        <!--              <th>Student</th>-->
+        <!--              <th>Date Proposed</th>-->
+        <!--              <th>Actions</th>-->
+        <!--          </tr>-->
+        <!--        </thead>-->
+
+        <!--        <tbody>-->
+        <!--            {% for p in proposals %}-->
+        <!--            <tr>-->
+        <!--                <td>{{ p.name }}</td>-->
+        <!--                <td>{{ "this isn't quite figured out yet" }}</td>-->
+        <!--                <td>{{ p.date  }}</td> &lt;!&ndash; this will need some Figuring Out in terms of formatting &ndash;&gt;-->
+        <!--                <td><a class="modal-trigger" href="#modal0{{ p.id }}"><i class="material-icons" style="cursor:pointer">info_outline</i></a>-->
+        <!--                <a href=""> <i class="material-icons" >person_add</i></a></td>-->
+        <!--            </tr>-->
+
+        <!--&lt;!&ndash;             I DISCOVERED SOMETHING so i had to put a 0 in the #modal for proposals&ndash;&gt;-->
+        <!--&lt;!&ndash;             because if not then it would refer to the clubs modal since they same the same id &ndash;&gt;-->
+        <!--&lt;!&ndash;             so we'll have to make sure that there are either UNIQUE ID'S or keep the dummy number there&ndash;&gt;-->
+
+        <!--            <div id="modal0{{ p.id }}" class="modal">-->
+        <!--                <div class="modal-content">-->
+        <!--                    <h4>{{ p.name }}</h4>-->
+        <!--                    <p>{{ p.description }}</p>-->
+        <!--                    <p>{{ "should also include the student who proposed it and other stuff" }}</p>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--            {% endfor %}-->
+
+        <!--        </tbody>-->
+        <!--    </table>-->
+    </div>
 
 {% endblock %}
 
