@@ -15,20 +15,19 @@
         $(document).ready(function(){
             $('select').material_select();
         });
-    </script>
-<!--    <script type="text/javascript">-->
-<!--        function submit_form() {-->
-<!--            let club_name = $('input[name="club_name').val();-->
-<!--            let room_nbr = $('input[name="club_room_nbr').val();-->
-<!--            let desc = $('textarea[name="club_desc').val();-->
-<!--            let max_nbr = $('input[name="club_max_nbr').val();-->
 
-<!--            if (!club_name || !room_nbr || !desc || !max_nbr)-->
-<!--                Materialize.toast('Please Fill Out All Fields Before Submitting', 3000);-->
-<!--            else-->
-<!--                $('#edit_club').submit();-->
-<!--        }-->
-<!--    </script>-->
+        function submit_form() {
+            let club_name = $('input[name="club_name').val();
+            let room_nbr = $('input[name="club_room_nbr').val();
+            let desc = $('textarea[name="club_desc').val();
+            let max_nbr = $('input[name="club_max_nbr').val();
+
+            if (!club_name || !room_nbr || !desc || !max_nbr)
+                Materialize.toast('Please Fill Out All Fields Before Submitting', 3000);
+            else
+                $('#edit_club').submit();
+        }
+    </script>
 
 <script type="text/javascript" src="{{ url_for('static', filename='alertifyjs/alertify.min.js') }}"></script>
 
@@ -91,8 +90,7 @@
             <!--            href="{{ config.LOCAL_DOMAIN }}/bakesale/teacher/create"-->
             <!--            href="{{ config.LOCAL_DOMAIN }}/morning_clubs/teacher/edit/{{ club.id }}"-->
             <div class="center-align">
-                <a class="waves-effect waves-light btn light-blue accent-2"
-                   href="{{ config.LOCAL_DOMAIN }}/morning_clubs/teacher/edit/{{ club.id }}">Save</a>
+                <a onclick=submit_form() class="waves-effect waves-light btn light-blue accent-2">Save</a>
             </div>
         </div>
     </form>

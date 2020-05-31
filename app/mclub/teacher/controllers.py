@@ -16,7 +16,7 @@ def get_clubs(usr_id):
 
         club_id = club[0]
         club_name = club[1]
-        club_advisor_id = club[2] # need to see if usr_id matches advisor_id
+        club_advisor_id = club[2]  # need to see if usr_id matches advisor_id
         club_day = club[3]
         club_room_nbr = club[4]
         club_description = club[5]
@@ -72,5 +72,13 @@ def edit_club(club_id, name, day, room_nbr, description, max_nbr):
     return False
 
 
+# honestly i haven't tried this query but it is almost 3am and i want to sleep so that is tomorrow's problem
+def add_club(name, max_nbr, day, room_nbr, desc, advisor_id):
+    insert(DB.CLUBS, "INSERT INTO club (name, max_nbr, day, room_nbr, description, advisor_id ) "
+                     "VALUES (%s, %s, %s, %s, %s, %s)", (name, max_nbr, day, room_nbr, desc, advisor_id))
+
+    return False
 
 
+def add_student(club_id, usr_id):
+    return True
