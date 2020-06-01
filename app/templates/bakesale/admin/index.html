@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="center-align">
+    <h1 class="center-align black-text title">Approve Bakesales</h1>
+</div>
+
+<table class="centered bordered">
+    <thead>
+        <tr>
+            <th>Group Name</th>
+            <th>Requested Date</th>
+            <th>Confirm</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for bakesale in bakesales %}
+        <tr>
+            <td> {{bakesale[1]}}</td>
+            <td> {{bakesale[8]}} </td>
+            <td>
+                <p>
+                    <input type="checkbox" id="{{bakesale[0]}}" onchange="confirm_bakesale('{{bakesale[0]}}', this.checked)">
+                    <label for="{{bakesale[0]}}"></label>
+                </p>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    function confirm_bakesale(bakesale_id, confirmed) {
+        $.ajax({
+            url: "{{url_for('bakesale_admin.confirm')}}",
+            method: "POST",
+            data: {
+                confirmed: confirmed,
+                bakesale_id: bakesale_id
+            },
+            success: function () {
+                alert("Succeeded")
+            }
+        });
+    }
+</script>
+
+{% endblock %}
