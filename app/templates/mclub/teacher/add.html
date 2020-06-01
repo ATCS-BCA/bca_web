@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/elective/admin/main.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='alertifyjs/css/alertify.min.css') }}"/>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='alertifyjs/css/themes/default.css') }}"/>
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+
+<script type="text/javascript">
+        $(document).ready(function(){
+            $('select').material_select();
+        });
+
+        function submit_form() {
+            let club_name = $('input[name="club_name').val();
+            let room_nbr = $('input[name="club_room_nbr').val();
+            let desc = $('textarea[name="club_desc').val();
+            let max_nbr = $('input[name="club_max_nbr').val();
+
+            if (!club_name || !room_nbr || !desc || !max_nbr)
+                Materialize.toast('Please Fill Out All Fields Before Submitting', 3000);
+            else
+                $('#add_club').submit();
+        }
+
+</script>
+
+
+<script type="text/javascript" src="{{ url_for('static', filename='alertifyjs/alertify.min.js') }}"></script>
+
+{% endblock %}
+
+{% block content %}
+<form id="add_club" method="post">
+    <div id="box" class="container">
+        <div class="row">
+            <div class="col s12 center-align">
+                <h3 class="title">Add Club</h3>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s7">
+                <input id="club_name" name="club_name" type="text" required>
+                <label for="club_name">Club Name</label>
+            </div>
+            <div class="input-field col s5">
+                <input id="club_max_nbr" name="club_max_nbr" type="text">
+                <label for="club_max_nbr">Max Students</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s7">
+                <!-- so the value is going to be in the "day" field for the club -->
+                <select id="club_type_cde" name="club_type_cde">
+                    {% for d in days %}
+                    <option value="{{ d.type_cde }} "> {{ d.type_name }}</option>
+                    {% endfor %}
+                </select>
+                <label for="club_type_cde">Meeting Day/Time</label>
+            </div>
+
+            <div class="input-field col s5">
+                <input id="club_room_nbr" name="club_room_nbr" type="text">
+                <label for="club_room_nbr">Room Number</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s12">
+                <textarea id="club_desc" name="club_desc" class="materialize-textarea" required></textarea>
+                <label for="club_desc">Description</label>
+            </div>
+        </div>
+
+        <div class="center-align">
+            <a onclick=submit_form() class="waves-effect waves-light btn light-blue accent-2">Add</a>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

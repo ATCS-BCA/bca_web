@@ -47,36 +47,31 @@
                     <input id="club_name" name="club_name" type="text" value="{{ club.name }}" required>
                     <label for="club_name">Club Name</label>
                 </div>
-                <div class="input-field col s3">
-                    <input id="club_room_nbr" name="club_room_nbr" type="text" value="{{ club.room_nbr }}">
-                    <label for="club_room_nbr">Room Number</label>
-                </div>
 
-                <div class="input-field col s3">
+                <div class="input-field col s6">
                     <input id="club_max_nbr" name="club_max_nbr" type="text" value="{{ club.max_nbr }}">
                     <label for="club_max_nbr">Max Students</label>
                 </div>
             </div>
 
             <div class="row">
-                <div class="input-field col s5">
-                    <!-- this is really ugly because Hardcoded but i wasn't sure if i should make a list in the database or not -->
-                    <select id="club_day">-->
-                        <option value="" disabled selected>Select</option>
-                        <option value="0">Monday</option>
-                        <option value="1">Tuesday</option>
-                        <option value="2">Wednesday Morning</option>
-                        <option value="3">Wednesday Afternoon</option>
-                        <option value="4">Thursday</option>
-                        <option value="5">Friday</option>
+                <div class="input-field col s6">
+                    <select id="club_day" name="club_day">
+                        {% for d in days %}
+                        {% if d.type_cde == club.type_cde %}
+                        <option value="{{ d.type_cde }}" selected>{{ d.type_name }}</option>
+                        {% else %}
+                        <option value="{{d.type_cde}}">{{ d.type_name }}</option>
+                        {% endif %}
+                        {% endfor %}
                     </select>
+
                     <label for="club_day">Meeting Day/Time</label>
                 </div>
 
-                <!-- issue here is How To Get The Student, for now the field is disabled -->
-                <div class="input-field col s7">
-                    <input id="club_student" name="club_student" type="text" value="didn't figure this out yet" disabled>
-                    <label for="club_student">Student</label>
+                <div class="input-field col s6">
+                    <input id="club_room_nbr" name="club_room_nbr" type="text" value="{{ club.room_nbr }}">
+                    <label for="club_room_nbr">Room Number</label>
                 </div>
             </div>
 
@@ -87,8 +82,6 @@
                 </div>
             </div>
 
-            <!--            href="{{ config.LOCAL_DOMAIN }}/bakesale/teacher/create"-->
-            <!--            href="{{ config.LOCAL_DOMAIN }}/morning_clubs/teacher/edit/{{ club.id }}"-->
             <div class="center-align">
                 <a onclick=submit_form() class="waves-effect waves-light btn light-blue accent-2">Save</a>
             </div>

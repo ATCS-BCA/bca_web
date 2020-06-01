@@ -18,11 +18,7 @@
 {% block content %}
 
     <div class="container">
-
-        <!--        should we also include directions, like we did in projects? what to do with these? should we include -->
-        <!--        an option for the admin to approve a club? -->
         <h4 class="center-align">My Clubs</h4>
-
         <table class="highlight">
             <thead>
             <tr>
@@ -38,21 +34,20 @@
                 <td>{{ club.name }}</td>
                 <td>{{ club.day }}</td>
                 <td>{{ club.enrollment_count }}</td>
-
-                <!--                this should basically call the edit function in views, i think?? -->
                 <td><a class="modal-trigger" href="#modal{{ club.id }}"><i class="material-icons"
                                                                            style="cursor:pointer">info_outline</i></a>
                     <a href="{{ url_for('mclub_teacher.edit', id=club.id) }}"><i class="material-icons"
                                                                                  style="cursor:pointer">mode_edit</i></a>
                     <a href="{{ url_for('mclub_teacher.rosters', id=club.id) }}"><i
-                            class="material-icons">person_add</i></a></td>
+                            class="material-icons">person_add</i></a>
+                </td>
             </tr>
 
             <div id="modal{{ club.id }}" class="modal">
                 <div class="modal-content">
                     <h4>{{ club.name }}</h4>
+                    <p>{{club.day}}s in Room {{club.room_nbr}}</p>
                     <p>{{ club.description }}</p>
-                    <p>{{ "should also include the student leader and other relevant info" }}</p>
                 </div>
             </div>
             {% endfor %}
@@ -62,13 +57,14 @@
         <!--        i forgot how to do styling please don't kill me!!!!!!!!!!! also i might change to a floating circular one-->
         <div class="center-align">
             <a class="waves-effect waves-light btn-large light-blue accent-2" style="margin-top: 20px"
-               href="{{ url_for('mclub_teacher.add_club')}}">Add Club</a>
+               href="{{ url_for('mclub_teacher.add')}}">Add Club</a>
         </div>
 
         <div>
             <ul class="collapsible" data-collapse="accordion" style="margin-top:20px;">
                 <li>
-                    <div class="collapsible-header active"><i class="material-icons">error_outline</i>Please Read??!!
+                    <div class="collapsible-header active">
+                        <i class="material-icons">error_outline</i>Instructions for Use
                     </div>
                     <div class="collapsible-body">You can use this app to add and manage clubs that you supervise.
                         <strong>If you are adding a club, please make sure it meets the requirements listed
