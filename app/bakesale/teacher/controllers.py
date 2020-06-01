@@ -32,7 +32,7 @@ def get_all_bakesales():
         description = bakesale[8]
         teacher_name = bakesale[9]
 
-        bakesale = Bakesale(bakesale_id, teacher_id, group_name, group_size, items_desc, date, teacher_name, description)
+        bakesale = Bakesale(bakesale_id, teacher_id, group_name, group_size, items_desc, date, teacher_name, description, requested_day)
 
         e_bakesales.append(bakesale)
 
@@ -63,7 +63,7 @@ def get_teacher_bakesales(teacher_id):
         description = bakesale[8]
         teacher_name = bakesale[9]
 
-        bakesale = Bakesale(bakesale_id, teacher_id, group_name, group_size, items_desc, date, teacher_name, description)
+        bakesale = Bakesale(bakesale_id, teacher_id, group_name, group_size, items_desc, date, teacher_name, description, requested_day)
 
         e_bakesales.append(bakesale)
 
@@ -82,7 +82,7 @@ def get_bakesale(bakesale_id):
 
     if info:
         b = info[0]
-        bakesale = Bakesale(b[0], b[3], b[1], b[2], b[5], b[6], b[9], b[8])
+        bakesale = Bakesale(b[0], b[3], b[1], b[2], b[5], b[6], b[9], b[8], b[4])
         return bakesale
 
     return None

@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 
 def datetime_from_string(time_str):
     return datetime.strptime(str(time_str), '%Y-%m-%d %H:%M:%S')

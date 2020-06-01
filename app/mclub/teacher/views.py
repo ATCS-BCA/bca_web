@@ -15,32 +15,34 @@ def check_teacher():
 
 @teacher_mod.route('/')
 def index():
-    return render_template("mclub/teacher/index.html", clubs=get_clubs(g.user.get_id()), proposals=get_proposals())
+    return render_template("mclub/teacher/index.html", clubs=get_clubs(g.user.get_id()))
 
 
 @teacher_mod.route('/add', methods=['GET', 'POST'])
-def add_club():
+def add():
     if request.method == 'POST':
         # is there a difference between request.form['field'] and request.form.get('field', None')
         club_name = request.form['club_name']
         club_max_nbr = request.form['club_max_nbr']
-        club_day = request.form['club_day']  # this might be a misnomer b/c it's more like meeting time than day
+        club_type_cde = request.form.get('club_type_cde')
         club_room_nbr = request.form['club_room_nbr']
         club_desc = request.form['club_desc']
 
-        if club_name and club_max_nbr and club_day and club_room_nbr and club_desc:
-            add_club(club_name, club_max_nbr, club_day, club_room_nbr, club_desc, g.user.get_id())
+        if club_name and club_max_nbr and club_type_cde and club_room_nbr and club_desc:
+            add_club(club_name, club_max_nbr, club_type_cde, club_room_nbr, club_desc, g.user.get_id(),
+                     get_type_name(club_type_cde))
 
-        return url_for('mclub_teacher.index')
+        return render_template("mclub/teacher/index.html", clubs=get_clubs(g.user.get_id()))
 
-    return render_template("mclub/teacher/add.html")
+    return render_template("mclub/teacher/add.html", days=get_club_days())
 
 
 @teacher_mod.route('/rosters/<int:id>', methods=['GET', 'POST'])
 def rosters(id):
-    return render_template("mclub/teacher/rosters.html")
+    return render_template("mclub/teacher/rosters.html", students=get_club_students(id))
 
 
+# also have to take into account the security issue of "verify this user can make changes to this club"
 @teacher_mod.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
     club = get_club(id)
@@ -51,19 +53,18 @@ def edit(id):
             name = request.form.get('club_name', None)
             room_nbr = request.form.get('club_room_nbr', None)
             max_nbr = request.form.get('club_max_nbr', None)
-            day = request.form.get('club_day', None)
+            type_cde = request.form.get('club_day', None)
             description = request.form.get('club_desc', None)
 
-            if name or room_nbr or max_nbr or day or description:
-                edit_club(id, name, day, room_nbr, description, max_nbr)
+            if name or room_nbr or max_nbr or type_cde or description:
+                edit_club(id, name, get_type_name(type_cde), room_nbr, description, max_nbr, type_cde)
 
             # send back to the index page after making changes
-            return render_template("mclub/teacher/index.html", clubs=get_clubs(g.user.get_id()),
-                                   proposals=get_proposals())
+            return render_template("mclub/teacher/index.html", clubs=get_clubs(g.user.get_id()))
 
         else:
             # if simply trying to see the edit page, not submitting changes
-            return render_template("mclub/teacher/edit.html", club=club)
+            return render_template("mclub/teacher/edit.html", club=club, days=get_club_days())
 
     else:  # error w/ the club
         redirect(url_for('mclub_teacher.index'))
