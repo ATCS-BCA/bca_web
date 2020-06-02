@@ -23,51 +23,30 @@ def index():
     available_clubs = []
 
     if not enroll_info.start_time is None:
+        all_clubs = get_clubs()
         enrolled_clubs = get_enrolled_clubs(g.user.get_id(), enroll_info.course_year, enroll_info.tri_nbr)
-        available_clubs = get_clubs()
+
+        for club in all_clubs:
+            if club.id not in [i.id for i in enrolled_clubs]:
+                available_clubs.append(club)
 
     return render_template("mclub/student/index.html", clubs=available_clubs, enroll_info=enroll_info, enrolled_clubs=enrolled_clubs)
 
 
-@student_mod.route('/enroll/<int:id>', methods=['PUT'])
-def enroll(id):
-    data = wrequest.get_json(force=True, silent=True)
-
-    club_id = id
-    usr_id = data['usr_id']
-    will_enroll = data['enroll']
-
+@student_mod.route('/enroll/<int:club_id>', methods=['GET'])
+def enroll(club_id):
     if enrollment_open(g.user.get_grade_level()):
-        if will_enroll:
-            if not is_club_full(club_id):
-                enroll_user(usr_id, club_id)
+        if not is_club_full(club_id):
+            usr_id = g.user.get_id()
+            enroll_user(usr_id, club_id)
 
-                return jsonify({"has_enrolled": True, "Error": None})
-
-            else:
-                return jsonify({"has_enrolled": False, "Error": "Club Full."})
-        else:
-            drop_club(usr_id, club_id)
-            return jsonify({"has_enrolled": False, "Error": None})
-
-    else:
-        return jsonify({"has_enrolled": False, "Error": "Enrollment Not Open"})
+    return redirect(url_for('mclub_student.index'))
 
 
-@student_mod.route('/enroll/update', methods=['PUT'])
-def ping():
-    data = request.get_json(force=True, silent=True)
+@student_mod.route('/drop/<int:club_id>', methods=['GET'])
+def drop(club_id):
+    usr_id = g.user.get_id()
+    drop_club(usr_id, club_id)
 
-    club_ids = data['club_ids']
+    return redirect(url_for('mclub_student.index'))
 
-    if(club_ids):
-
-        amount_left = {}
-
-        for i in range(len(club_ids)):
-            amount_left[club_ids[i]] = get_amount_left(club_ids[i])
-
-        return jsonify(amount_left)
-
-    else:
-        return jsonify({"Error": "Invalid parameters"})

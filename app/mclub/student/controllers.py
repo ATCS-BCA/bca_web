@@ -1,6 +1,6 @@
 from app.db import DB, insert, insertmany, query_one, query, delete, update
 
-from app.mclub.student.models import Club, Proposal, EnrollmentTime
+from app.mclub.student.models import Club, EnrollmentTime
 
 from config import Config
 from .util import datetime_from_string, us_format
@@ -23,6 +23,14 @@ def get_enrollment_time(grade_level):
     else:
         return EnrollmentTime(grade_level, None, None, get_current_year(), '-1')
 
+def enrollment_open(grade_level):
+    result = query_one(DB.CLUBS, "SELECT * "
+                                  "FROM signup_dates t "
+                                  "WHERE t.grade_lvl = %s "
+                                  "AND NOW() >= t.start "
+                                  "AND NOW() <= t.end", [grade_level])
+
+    return (not result is None)
 
 
 # Enroll a user in a club
@@ -31,13 +39,32 @@ def enroll_user(usr_id, club_id):
     insert(DB.CLUBS, 'INSERT INTO club_user_xref (club_id, usr_id) VALUES (%s, %s) '
                         'ON DUPLICATE KEY UPDATE club_id=club_id', [club_id, usr_id])
 
+    enrollment_count = query_one(DB.CLUBS, "SELECT enrollment_count "
+                                     "FROM club "
+                                     "WHERE club_id = %s", club_id)
+
+    query = "UPDATE club SET enrollment_count = %s WHERE club_id = %s"
+    params = [enrollment_count[0] + 1, club_id]
+    update(DB.CLUBS, query, params)
+
+
+
 # Remove a user from a club
 def drop_club(usr_id, club_id):
     delete(DB.CLUBS, 'DELETE FROM club_user_xref WHERE usr_id=%s AND club_id=%s', [usr_id, club_id])
 
+    enrollment_count = query_one(DB.CLUBS, "SELECT enrollment_count "
+                                           "FROM club "
+                                           "WHERE club_id = %s", club_id)
+
+    query = "UPDATE club SET enrollment_count = %s WHERE club_id = %s"
+    params = [enrollment_count[0] - 1, club_id]
+    update(DB.CLUBS, query, params)
+
+
 # Returns whether a club is full
 def is_club_full(club_id):
-    club_info = query_one(DB.CLUBS, "SELECT enrolled_count, max_nbr "
+    club_info = query_one(DB.CLUBS, "SELECT enrollment_count, max_nbr "
                                      "FROM club "
                                      "WHERE club_id = %s", club_id)
 
@@ -47,7 +74,8 @@ def is_club_full(club_id):
 def get_clubs():
     clubs = query(DB.CLUBS, "SELECT club_id, name, advisor_id, day, room_nbr, description, max_nbr, enrollment_count"
                                         " FROM club " 
-                                        " order by club_id")
+                                        "WHERE club_type_cde = 3" # Displaying only Wednesday Afternoon Clubs
+                                         " order by club_id")
 
     all_clubs = []
 
@@ -74,8 +102,9 @@ def get_enrolled_clubs(usr_id, year, tri):
                     "FROM club " 
                     "WHERE course_year = %s "
                     "AND tri = %s "
+                    "AND club_type_cde = 3 "
                     "AND club_id in (SELECT club_id FROM club_user_xref WHERE usr_id=%s) "
-                    "ORDER BY club_id", [str(year), int(tri), usr_id])
+                    "ORDER BY club_id", [str(year), str(tri), str(usr_id)])
 
     # enrolled clubs
     e_clubs = []
@@ -119,6 +148,7 @@ def get_current_info():
                                          'ORDER BY end_dt')[0]
     return [current_year, current_tri]
 
+
 def get_amount_left(club_id):
     club_info = query_one(DB.CLUBS, "SELECT c.max_nbr - c.enrolled_count "
                                           "FROM club c"
@@ -126,6 +156,8 @@ def get_amount_left(club_id):
 
     return club_info
 
+
+"""
 
 def get_proposals():
     proposals = query(DB.CLUBS, "SELECT proposal_id, club_name, description, date_proposed"
@@ -146,4 +178,4 @@ def get_proposals():
     return all_proposals
 
 
-
+"""

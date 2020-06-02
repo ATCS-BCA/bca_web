@@ -1,22 +1,10 @@
 {% extends "base.html" %}
 
-{% block scripts %}
-    {{ super() }}
-
-    <script type="text/javascript" src="{{ url_for('static', filename='alertifyjs/alertify.min.js') }}"></script>
-{% endblock %}
-
 {% block styles %}
     {{ super() }}
-
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='alertifyjs/css/alertify.min.css') }}"/>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='alertifyjs/css/themes/default.css') }}"/>
-
     <link rel="stylesheet" href="{{ url_for('static', filename='css/elective/main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/elective/student/main.css') }}">
-
     <link rel="stylesheet" href="{{ url_for('static', filename='css/elective/teacher/create/main.css') }}">
-
 {% endblock %}
 
 {% block content %}
@@ -24,7 +12,7 @@
     <div class="center-align">
 
         {% if True %}
-            <h1 class="center-align black-text title">Club Enroll for Trimester {{ enroll_info.tri_nbr }}</h1>
+            <h1 class="center-align black-text title">Club Enrollment for Trimester {{ enroll_info.tri_nbr }}</h1>
             <h6 class="center-align black-text close">Club registration closes on {{ enroll_info.end_time }}</h6>
         {% else %}
             <h1 class="center-align black-text title">Club registration opens on {{ enroll_info.start_time }}</h1>
@@ -37,275 +25,76 @@
         -->
     </div>
 
-        <div class="main container white z-depth-2 {%  if enrolled_sections|length == 0 %} hide {% endif %}" style="padding-right: 25px; padding-left: 25px;">
-            <div class="row head">
-                <div id="project_current">
-                    <div class="row">
-                        <div class="col s6 ">
-                            <h3 style="margin-top: 17px;">My Clubs</h3>
-                        </div>
-                    </div>
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <th><strong>Name</strong></th>
-                                <th><strong>Times</strong></th>
-                                <th><strong>Room</strong></th>
-                                <th><strong>Info</strong></th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            {% for club in enrolled_clubs %}
-                            <tr id="{{club.id}}" style="font-weight: 300;">
-                                <td></td>
-                                <td>{{ club.name }}</td>
-                                <td>{{ club.day }}</td>
-                                <td>{{ club.room_nbr }}</td>
-                                <td>{{ club.enrollment_count }}/{{ club.max_nbr }}</td>
-                                <td></td>
-                                <td><a class="enroll btn red lighten-2" id="disenroll_button" onclick="update_status({{ club.id }}, false)">Remove</a></td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-
-                    </table>
-
-                </div>
-            </div>
-        </div>
-        <br>
-        <div id="club_list_container" class="main container white z-depth-2 col s12" style="padding: 0 25px;">
-            <div>
-                <h3 class="center-align">Available Clubs</h3>
-
-                <div class="row head search-wr">
-                    <div class="col m6 offset-m1 s12">
-                        <div class="col s2" style="width: auto !important; padding-top: 10px;">
-                            <i class="material-icons" style="position: relative; display: inline-block; ">search</i>
-                        </div>
-                        <div class="col s10">
-                            <input id="search" style="display: block; font-weight: 300;" placeholder="Search"/>
-                        </div>
+    <div class="main container white z-depth-2 {%  if enrolled_clubs|length == 0 %} hide {% endif %}" style="padding-right: 25px; padding-left: 25px;">
+        <div class="row head">
+            <div id="project_current">
+                <div class="row">
+                    <div class="col s6 ">
+                        <h3 style="margin-top: 17px;">My Clubs</h3>
                     </div>
                 </div>
 
-                <table class="highlight centered">
+                <table>
                     <thead>
                         <tr>
-                            <th></th>
                             <th><strong>Name</strong></th>
                             <th><strong>Times</strong></th>
                             <th><strong>Room</strong></th>
                             <th><strong>Enrolled/Max</strong></th>
                         </tr>
                     </thead>
-
                     <tbody>
-                        {% for club in clubs %}
-                            {% if club.id not in enrolled_clubs %}
-                                <tr id="{{ club.id }}" class="available_club" club_id="{{ club.id }}" name_key="{{ club.name }}" style="font-weight: 300;">
-                                    <td></td>
-                                    <td>{{ club.name }}</td>
-                                    <td>{{ club.day }}</td>
-                                    <td>{{ club.room_nbr }}</td>
-                                    <td>{{ club.enrollment_count }}/{{ club.max_nbr }}</td>
-                                    {% if club.enrollment_count >= club.max_nbr %}
-                                        <td><a class="enroll btn green" disabled>Enroll</a></td>
-                                    {% else %}
-                                        <td><a class="enroll btn green" id="enroll_button" onclick="update_status({{ club.id }}, true)">Enroll</a></td>
-                                    {% endif %}
-                                </tr>
-                            {% endif %}
+                        {% for club in enrolled_clubs %}
+                        <tr id="{{club.id}}" style="font-weight: 300;">
+                            <td>{{ club.name }}</td>
+                            <td>{{ club.day }}</td>
+                            <td>{{ club.room_nbr }}</td>
+                            <td>{{ club.enrollment_count }}/{{ club.max_nbr }}</td>
+                            <td><a class="enroll btn red lighten-2" href="{{ url_for('mclub_student.drop', club_id=club.id)}}">Remove</a></td>
+                        </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
+    </div>
 
-<div id="filter_modal" class="modal" style="width: 500px !important; height: 50vh !important; overflow: hidden;">
-        <div class="modal-content" style="padding-bottom: 0;">
-            <h2>Day Filter</h2>
-            <input type="checkbox" id="M" value="Monday"/>
-            <label for = "M">Monday</label>
+    <br>
+
+    <div id="club_list_container" class="main container white z-depth-2 col s12" style="padding: 0 25px;">
+        <div>
             <br>
-            <input type="checkbox" id="T" value="Tuesday"/>
-            <label for = "T">Tuesday</label>
-            <br>
-            <input type="checkbox" id="W" value="Wednesday"/>
-            <label for = "W">Wendesday</label>
-            <br>
-            <input type="checkbox" id="R" value="Thursday"/>
-            <label for = "R">Thursday</label>
-            <br>
-            <input type="checkbox" id="F" value="Friday"/>
-            <label for = "F">Friday</label>
+            <h3 class="center-align">Available Clubs</h3>
         </div>
 
-        <div class="modal-footer" style="margin-top: 5%;">
-            <div class="row">
-                <a id="filter_update" class="disabled enroll btn orange lighten-2" onclick="applyFilters()">Update Filter</a>
-                <br/>
-                <a id="filter_remove" class="hide enroll btn red lighten-2">Remove</a>
-            </div>
-        </div>
-</div>
 
+        <table class="highlight centered">
+            <thead>
+                <tr>
+                    <th><strong>Name</strong></th>
+                    <th><strong>Times</strong></th>
+                    <th><strong>Room</strong></th>
+                    <th><strong>Enrolled/Max</strong></th>
+                </tr>
+            </thead>
 
-<script type="text/javascript">
-
-    // updates a user's status in a club
-    function update_status(club_id, enroll) {
-        let requestData = {};
-        requestData.usr_id = {{ g.user.get_id() }};
-        requestData.enroll = enroll;
-
-        $.ajax({
-            url: '{{ config.LOCAL_DOMAIN }}/club_enroll/student/enroll/' + club_id,
-            type: 'PUT',
-            data: JSON.stringify(requestData),
-            contentType: 'application/json',
-            dataType: "json"
-
-        }).done(function(data) {
-            console.log(data);
-            console.log("Returned");
-            alertify.success("Updated club status " + club_id);
-
-            let sectionElement = $("#" + club_id);
-
-            if(!enroll) {
-
-                sectionElement.hide();
-                // remove "remove" button
-                sectionElement.children().last().remove();
-                sectionElement.children().last().remove();
-
-                // add "add" button
-                sectionElement.append("<td><a class="enroll btn green" id="enroll_button" onclick="update_status({{ club.id }}, true)">Enroll</a></td>");
-
-                decreaseEnrolledCount(club_id);
-
-                sectionElement.show();
-
-                sectionElement.prependTo("#club_list");
-            } else {
-
-                sectionElement.hide();
-                // remove add button
-                sectionElement.children().last().remove();
-                sectionElement.append("<td></td>");
-                sectionElement.append("<td><a class="enroll btn red lighten-2" id="disenroll_button" onclick="update_status({{ club.id }}, false)">Remove</a></td>");
-
-                increaseEnrolledCount(club_id);
-
-                sectionElement.show();
-
-                sectionElement.prependTo("#current_enrolled_clubs");
-
-
-            }
-
-            updateEnrolled();
-        }).fail(function(data) {
-            console.log(data);
-        });
-    }
-
-    function increaseEnrolledCount(club_id) {
-        let element = $("#" + club_id);
-
-        let textElement = element.children(".enrolled_count");
-        let text = textElement.text();
-        let num = parseInt(text.split("/")[0]);
-        let max = text.split("/")[text.split("/").length-1];
-
-        textElement.text(num+1 + "/" + max);
-    }
-
-    function decreaseEnrolledCount(club_id) {
-        let element = $("#" + club_id);
-
-        let textElement = element.children(".enrolled_count");
-        let text = textElement.text();
-        let num = parseInt(text.split("/")[0]);
-        let max = text.split("/")[text.split("/").length-1];
-
-        num = num-1 >= 0 ? num-1 : 0;
-
-        textElement.text(num + "/" + max);
-    }
-
-    function setEnrolledCount(club_id, new_count) {
-        let element = $("#" + club_id);
-
-        let textElement = element.children(".enrolled_count");
-        let text = textElement.text();
-        let max = text.split("/")[text.split("/").length-1];
-
-        textElement.text(new_count + "/" + max);
-    }
-
-    // Check whether to remove the enrolled board if it has no sections left
-    function updateEnrolled() {
-        let element = $("#current_enrolled_sections");
-
-        let container = element.parent().parent().parent().parent();
-
-        if(element.children().length <= 0) {
-            container.hide('fade');
-        } else if(!container.is(":visible")) {
-            container.hide();
-            container.removeClass('hide');
-            container.show();
-        }
-    }
-
-    function asyncUpdateSections() {
-        console.log("updating...");
-    }
-
-</script>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        let signup = {{ 0 if not enroll_info.end_time else 1 }};
-        let enroll = {{ 0 if not enroll_info.end_time else 1 }};
-
-        if (signup) {
-            if (enroll) {
-                $(".enroll_button").removeClass("disabled");
-                $(".disenroll_button").addClass("disabled");
-            } else {
-                $(".enroll_button").addClass("disabled");
-                $(".disenroll").removeClass("disabled");
-            }
-        } else {
-            $(".enroll_button").addClass("disabled");
-            $(".disenroll_button").addClass("disabled");
-        }
-
-        $("#search").on("keyup", function() {
-
-            let query = $("#search").val().toLowerCase();
-
-            $(".available_elective").each(function() {
-                if($(this).attr("name_key").toLowerCase().indexOf(query) === -1 && $(this).attr("teacher_key").toLowerCase().indexOf(query) === -1) {
-                    $(this).hide();
-                } else {
-                    $(this).show();
-                }
-
-            });
-
-        });
-
-        // update the electives every 5 seconds to remove filled ones/update counts
-        setTimeout(asyncUpdateSections(), 5*1000);
-    });
-</script>
-
-
+            <tbody>
+                {% for club in clubs %}
+                    <tr id="{{ club.id }}">
+                            <td>{{ club.name }}</td>
+                            <td>{{ club.day }}</td>
+                            <td>{{ club.room_nbr }}</td>
+                            <td>{{ club.enrollment_count }}/{{ club.max_nbr }}</td>
+                            {% if club.enrollment_count >= club.max_nbr %}
+                                <td><a class="enroll btn green" disabled>Enroll</a></td>
+                            {% else %}
+                                <td><a class="enroll btn green" href="{{ url_for('mclub_student.enroll', club_id=club.id) }}">Enroll</a></td>
+                            {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
 {% endblock %}
+
