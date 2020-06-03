@@ -35,13 +35,12 @@
         $.ajax({
             url: "{{url_for('bakesale_admin.confirm')}}",
             method: "POST",
-            data: {
+            data: JSON.stringify({
                 confirmed: confirmed,
                 bakesale_id: bakesale_id
-            },
-            success: function () {
-                alert("Succeeded")
-            }
+            }),
+            contentType: 'application/json',
+            dataType: "json"
         });
     }
 </script>

@@ -33,8 +33,9 @@ def index():
 
 @admin_mod.route('/confirm', methods=["GET", "POST"])
 def confirm():
-    bakesale_id = request.form.get("bakesale_id")
-    if request.form.get("confirmed") == "true":
+    data = request.get_json(force=True, silent=True)
+    bakesale_id = data["bakesale_id"]
+    if data["confirmed"] == "true":
         status_code = "A"
     else:
         status_code = "D"
