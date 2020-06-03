@@ -39,4 +39,4 @@ def confirm():
         status_code = "A"
     else:
         status_code = "D"
-    query(DB.BAKESALE, "update bakesale set status_code = '" + status_code + "', date = requested_date where bakesale_id = " + bakesale_id)
+    query(DB.BAKESALE, "update bakesale set status_code = '" + status_code + "', date = requested_day where bakesale_id = " + bakesale_id)
