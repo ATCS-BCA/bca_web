@@ -85,7 +85,7 @@
                             <td>{{ club.day }}</td>
                             <td>{{ club.room_nbr }}</td>
                             <td>{{ club.enrollment_count }}/{{ club.max_nbr }}</td>
-                            {% if club.enrollment_count >= club.max_nbr %}
+                            {% if club.enrollment_count >= club.max_nbr or enrolled_clubs|length != 0 %}
                                 <td><a class="enroll btn green" disabled>Enroll</a></td>
                             {% else %}
                                 <td><a class="enroll btn green" href="{{ url_for('mclub_student.enroll', club_id=club.id) }}">Enroll</a></td>
