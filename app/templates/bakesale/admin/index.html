@@ -70,6 +70,7 @@
     });
 
     function confirm_bakesale(bakesale_id, confirmed) {
+        alert(bakesale_id)
         $.ajax({
             url: "{{url_for('bakesale_admin.confirm')}}",
             method: "POST",
@@ -78,7 +79,7 @@
                 bakesale_id: bakesale_id
             }),
             contentType: 'application/json',
-            dataType: "json",
+            dataType: "json"
         }).done(function() {
             if (confirmed) {
                 $("#m" + bakesale_id).modal("open");
