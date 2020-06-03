@@ -77,8 +77,9 @@ def edit_club(club_id, name, day, room_nbr, description, max_nbr, type_cde):
 
 
 def add_club(name, max_nbr, type_cde, room_nbr, desc, advisor_id, day):
-    insert(DB.CLUBS, "INSERT INTO club (name, max_nbr, club_type_cde, room_nbr, description, advisor_id, day ) "
-                     "VALUES (%s, %s, %s, %s, %s, %s, %s)", (name, max_nbr, type_cde, room_nbr, desc, advisor_id, day))
+    insert(DB.CLUBS,
+           "INSERT INTO club (name, max_nbr, club_type_cde, room_nbr, description, advisor_id, day, enrollment_count ) "
+           "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (name, max_nbr, type_cde, room_nbr, desc, advisor_id, day, 0))
 
     return False
 
@@ -114,7 +115,8 @@ def get_club_day(club_id):
 
 def add_student(club_id, usr_id):
     insert(DB.CLUBS, "INSERT INTO club_user_xref (usr_id, club_id) "
-                     "VALUES (%s, %s)", (usr_id, club_id))
+                     "VALUES (%s, %s) "
+                     "ON DUPLICATE KEY", (usr_id, club_id))
 
     return False
 
@@ -131,6 +133,7 @@ def get_club_students(club_id):
                                     "WHERE usr_type_cde='STD' "
                                     "AND usr_id=%s", [user[0]])
 
+        # (essentially) combine all their info into one object
         students.append(Student(info[0], info[1], info[2], info[3], info[4]))
 
     # return a list of all the students enrolled in a club + their information
