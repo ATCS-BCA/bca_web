@@ -6553,7 +6553,7 @@ if (Vel) {
 
               // If the target was the holder that covers the screen,
               // keep the element focused to maintain tabindex.
-              P.close(target === P.$root.children()[0]);
+              // P.close(target === P.$root.children()[0]);
             }
           }).on('keydown.' + STATE.id, function (event) {
 
