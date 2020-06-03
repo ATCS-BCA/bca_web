@@ -47,8 +47,7 @@
             today: 'Today',
             clear: 'Clear',
             close: 'Ok',
-            closeOnSelect: false, // Close upon selecting a date,
-            container: undefined // ex. 'body' will append picker to body
+            closeOnSelect: false // Close upon selecting a date,
         });
 
         // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
@@ -79,11 +78,12 @@
                 bakesale_id: bakesale_id
             }),
             contentType: 'application/json',
-            dataType: "json"
+            dataType: "json",
+        }).done(function() {
+            if (confirmed) {
+                $("#m" + bakesale_id).modal("open");
+            }
         });
-        if (confirmed) {
-            $("#m" + bakesale_id).modal("open");
-        }
     }
 </script>
 
