@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/elective/admin/main.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='alertifyjs/css/alertify.min.css') }}"/>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='alertifyjs/css/themes/default.css') }}"/>
+<!-- i am certain that we are stealing some styles from elective/admin BUT it's fine for now -->
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+
+<script type="text/javascript">
+        $(document).ready(function(){
+            $('select').material_select();
+        });
+
+        function submit_form() {
+            let club_name = $('input[name="club_name').val();
+            let room_nbr = $('input[name="club_room_nbr').val();
+            let desc = $('textarea[name="club_desc').val();
+            let max_nbr = $('input[name="club_max_nbr').val();
+
+            if (!club_name || !room_nbr || !desc || !max_nbr)
+                Materialize.toast('Please Fill Out All Fields Before Submitting', 3000);
+            else
+                $('#edit_club').submit();
+        }
+
+</script>
+
+<script type="text/javascript" src="{{ url_for('static', filename='alertifyjs/alertify.min.js') }}"></script>
+
+{% endblock %}
+
+{% block content %}
+<form id="edit_club" method="post">
+    <div id="box" class="container">
+        <div class="row">
+            <div class="col s12 center-align">
+                <h3 class="title">Student Roster</h3>
+            </div>
+        </div>
+
+        <!--            include a drop down menu at the top maybe WHOSE VALUE IS THE USR_ID OF THE STUDENT-->
+        <!--            and they should be able to add a student that way?? -->
+        <!--            removing a student should also be an option, that can be a little trash can icon + simply query -->
+        <table class="highlight">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Grade</th>
+                <th>Academy</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{student.first_name}} {{student.last_name}}</td>
+                <td>{{student.class_year}}</td>
+                <td>{{student.academy_cde}}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="center-align">
+            <a onclick=submit_form() class="waves-effect waves-light btn light-blue accent-2" style="margin-top:20px">Save</a>
+        </div>
+    </div>
+</form>
+
+{% endblock %}

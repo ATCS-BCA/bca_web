@@ -17,4 +17,11 @@ class Proposal(object):
         self.description = desc
         self.date = date
 
+class EnrollmentTime(object):
 
+    def __init__(self, grade_level, start_time, end_time, course_year, tri_nbr):
+        self.grade_level = grade_level
+        self.start_time = start_time
+        self.end_time = end_time
+        self.course_year = course_year
+        self.tri_nbr = tri_nbr
