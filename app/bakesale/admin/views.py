@@ -39,4 +39,12 @@ def confirm():
         status_code = "A"
     else:
         status_code = "D"
-    query(DB.BAKESALE, "update bakesale set status_code = '" + status_code + "', date = requested_day where bakesale_id = " + bakesale_id)
+    query(DB.BAKESALE, "update bakesale set status_code = '" + status_code + "' where bakesale_id = " + bakesale_id)
+
+@admin_mod.route('/set_date', methods=["GET", "POST"])
+def set_date():
+    data = request.get_json(force=True, silent=True)
+    bakesale_id = data["bakesale_id"]
+    date = data["date"]
+
+    query(DB.BAKESALE, "update bakesale set date = " + date + " where bakesale_id = " + bakesale_id)
