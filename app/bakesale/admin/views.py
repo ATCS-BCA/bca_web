@@ -5,6 +5,8 @@ from app.bakesale.admin.controllers import *
 
 from flask import g, redirect, url_for, render_template, request, jsonify
 
+import json
+
 # Explanation:
 # This file is a sub app for the elective enroll application
 # It is specified for students
