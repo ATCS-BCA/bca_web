@@ -35,7 +35,7 @@ def index():
 def confirm():
     data = request.get_json(force=True, silent=True)
     bakesale_id = data["bakesale_id"]
-    if data["confirmed"] == "true":
+    if data["confirmed"]:
         status_code = "A"
     else:
         status_code = "D"
