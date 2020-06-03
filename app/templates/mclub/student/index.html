@@ -1,85 +1,76 @@
 {% extends "base.html" %}
 
-{% block scripts %}
-    {{ super() }}
-
-    <script type="text/javascript" src="{{ url_for('static', filename='alertifyjs/alertify.min.js') }}"></script>
-{% endblock %}
-
 {% block styles %}
     {{ super() }}
-
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='alertifyjs/css/alertify.min.css') }}"/>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='alertifyjs/css/themes/default.css') }}"/>
-
     <link rel="stylesheet" href="{{ url_for('static', filename='css/elective/main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/elective/student/main.css') }}">
-
     <link rel="stylesheet" href="{{ url_for('static', filename='css/elective/teacher/create/main.css') }}">
-
 {% endblock %}
 
 {% block content %}
 
     <div class="center-align">
-        <h1 class="center-align black-text title">Club Enroll for Trimester 1</h1>
+
+        {% if True %}
+            <h1 class="center-align black-text title">Club Enrollment for Trimester {{ enroll_info.tri_nbr }}</h1>
+            <h6 class="center-align black-text close">Club registration closes on {{ enroll_info.end_time }}</h6>
+        {% else %}
+            <h1 class="center-align black-text title">Club registration opens on {{ enroll_info.start_time }}</h1>
+        {% endif %}
+
+        <!--
+        Implement this in the future
         <a class="btn green-ligthen 2">Propose a new club</a>
-        <br>
-        <br>
+        <br></br>
+        -->
     </div>
 
-
-        <div class="main container white z-depth-2" style="padding-right: 25px; padding-left: 25px;">
-            <div class="row head">
-                <div id="project_current">
-                    <div class="row">
-                        <div class="col s6 ">
-                            <h3 style="margin-top: 17px;">My Clubs</h3>
-                        </div>
+    <div class="main container white z-depth-2 {%  if enrolled_clubs|length == 0 %} hide {% endif %}" style="padding-right: 25px; padding-left: 25px;">
+        <div class="row head">
+            <div id="project_current">
+                <div class="row">
+                    <div class="col s6 ">
+                        <h3 style="margin-top: 17px;">My Clubs</h3>
                     </div>
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <th><strong>Name</strong></th>
-                                <th><strong>Times</strong></th>
-                                <th><strong>Room</strong></th>
-                                <th><strong>Info</strong></th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <!-- Enrolled Electives -->
-                        </tbody>
-
-                    </table>
-
                 </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th><strong>Name</strong></th>
+                            <th><strong>Times</strong></th>
+                            <th><strong>Room</strong></th>
+                            <th><strong>Enrolled/Max</strong></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for club in enrolled_clubs %}
+                        <tr id="{{club.id}}" style="font-weight: 300;">
+                            <td>{{ club.name }}</td>
+                            <td>{{ club.day }}</td>
+                            <td>{{ club.room_nbr }}</td>
+                            <td>{{ club.enrollment_count }}/{{ club.max_nbr }}</td>
+                            <td><a class="enroll btn red lighten-2" href="{{ url_for('mclub_student.drop', club_id=club.id)}}">Remove</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
-<br>
-<div id="club_list_container" class="main container white z-depth-2 col s12" style="padding: 0 25px;">
-    <div class="section" id="project_list">
-        <h3 class="center-align">Available Clubs</h3>
+    </div>
 
-        <div class="row head search-wr">
-            <div class="col m6 offset-m1 s12">
-                <div class="col s2" style="width: auto !important; padding-top: 10px;">
-                    <i class="material-icons" style="position: relative; display: inline-block; ">search</i>
-                </div>
-                <div class="col s10">
-                    <input id="search" style="display: block; font-weight: 300;" placeholder="Search"/>
-                </div>
-            </div>
-            <div class="col m2 offset-m1 s12">
-                <a data-target="filter_modal" class="btn btn-block orange lighten-2 modal-trigger">Filter</a>
-            </div>
+    <br>
+
+    <div id="club_list_container" class="main container white z-depth-2 col s12" style="padding: 0 25px;">
+        <div>
+            <br>
+            <h3 class="center-align">Available Clubs</h3>
         </div>
+
 
         <table class="highlight centered">
             <thead>
                 <tr>
-                    <th></th>
                     <th><strong>Name</strong></th>
                     <th><strong>Times</strong></th>
                     <th><strong>Room</strong></th>
@@ -89,133 +80,21 @@
 
             <tbody>
                 {% for club in clubs %}
-                <tr>
-                    <td></td>
-                    <td>{{ club.name }}</td>
-                    <td>{{ club.day }}</td>
-                    <td>{{ club.room_nbr }}</td>
-                    <td>{{ club.enrollment_count }}/{{ club.max_nbr }}</td>
-                    <td><a class="enroll btn green">Enroll</a></td>
-                </tr>
+                    <tr id="{{ club.id }}">
+                            <td>{{ club.name }}</td>
+                            <td>{{ club.day }}</td>
+                            <td>{{ club.room_nbr }}</td>
+                            <td>{{ club.enrollment_count }}/{{ club.max_nbr }}</td>
+                            {% if club.enrollment_count >= club.max_nbr %}
+                                <td><a class="enroll btn green" disabled>Enroll</a></td>
+                            {% else %}
+                                <td><a class="enroll btn green" href="{{ url_for('mclub_student.enroll', club_id=club.id) }}">Enroll</a></td>
+                            {% endif %}
+                    </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
-</div>
-
-<div id="filter_modal" class="modal" style="width: 500px !important; height: 50vh !important; overflow: hidden;">
-        <div class="modal-content" style="padding-bottom: 0;">
-            <h2>Day Filter</h2>
-            <input type="checkbox" id="M" value="Monday"/>
-            <label for = "M">Monday</label>
-            <br>
-            <input type="checkbox" id="T" value="Tuesday"/>
-            <label for = "T">Tuesday</label>
-            <br>
-            <input type="checkbox" id="W" value="Wednesday"/>
-            <label for = "W">Wendesday</label>
-            <br>
-            <input type="checkbox" id="R" value="Thursday"/>
-            <label for = "R">Thursday</label>
-            <br>
-            <input type="checkbox" id="F" value="Friday"/>
-            <label for = "F">Friday</label>
-        </div>
-
-        <div class="modal-footer" style="margin-top: 5%;">
-            <div class="row">
-                <a id="filter_update" class="disabled enroll btn orange lighten-2" onclick="applyFilters()">Update Filter</a>
-                <br/>
-                <a id="filter_remove" class="hide enroll btn red lighten-2">Remove</a>
-            </div>
-        </div>
-</div>
-
-<script type="text/javascript">
-    $('.modal').modal({
-        inDuration: 100, // Transition in duration
-        outDuration: 100 // Transition out duration
-    });
-
-    let filters = [];
-    let new_filters = [];
-
-    $('.availability').click(function() {
-        if ($(this).attr('data-chosen') === 'false'){
-            $(this).css("background","#46D946");
-            $(this).attr("data-chosen", 'true');
-
-            updateFilterState();
-
-        } else {
-            if($(this).parents('.even').length) {
-                $(this).css("background","white");
-            } else {
-                $(this).css("background","#EBEBEB");
-            }
-            $(this).attr("data-chosen", "false");
-
-            updateFilterState();
-        }
-    });
-
-    function updateFilterState() {
-        if (new_filters !== filters) {
-            $("#filter_update").removeClass('disabled');
-        } else {
-            $("#filter_update").addClass('disabled');
-        }
-    }
-
-    function applyFilters() {
-        filters = new_filters;
-
-        let searchStr = filters.join(', ');
-
-        $(".available_elective").forEach(function(element) {
-
-            if(element.children()[2].text().indexOf(searchStr) == -1) {
-                element.addClass("hide");
-            } else {
-                element.removeClass("hide");
-            }
-
-        });
-
-        $("#filter_modal").modal();
-    }
-
-    function get_times() {
-        let selected_times = $("td[data-chosen='true']");
-        let times = [];
-
-        for (let i = 0; i < selected_times.length; i++)
-            times += (selected_times[i].id + " " + selected_times[i].innerHTML) + (i !== selected_times.length - 1 ? ', ' : '');
-
-        return times.sort();
-    }
-
-</script>
-
-<script type="text/javascript">
-        $("#search").on("keyup", function() {
-
-            let query = $("#search").val().toLowerCase();
-
-            $(".available_elective").each(function() {
-                if($(this).attr("name_key").toLowerCase().indexOf(query) === -1 && $(this).attr("teacher_key").toLowerCase().indexOf(query) === -1) {
-                    $(this).hide();
-                } else {
-                    $(this).show();
-                }
-
-            });
-
-        });
-
-        // update the electives every 5 seconds to remove filled ones/update counts
-        setTimeout(asyncUpdateSections(), 5*1000);
-    });
-</script>
 
 {% endblock %}
+
