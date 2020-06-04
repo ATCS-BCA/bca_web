@@ -59,7 +59,6 @@
                 complete: function() {
                     let bakesale_id = $(this).attr("id").substring(1);
                     let date = $("#d" + bakesale_id).val();
-                    alert(date);
                     $.ajax({
                         url: "{{url_for('bakesale_admin.set_date')}}",
                         method: "POST",
