@@ -5,7 +5,7 @@ from app.bakesale.admin.controllers import *
 
 from flask import g, redirect, url_for, render_template, request, jsonify
 
-import datetime
+from time import strptime
 
 # Explanation:
 # This file is a sub app for the elective enroll application
@@ -48,9 +48,11 @@ def confirm():
 def set_date():
     data = request.get_json(force=True, silent=True)
     bakesale_id = data["bakesale_id"]
-    date = datetime.datetime.strptime(data["date"], "%d %B, %y").strftime("%Y-%m-%d %H:%M:%S")
+    date = data["date"].split(" ")
 
+    month = strptime(date[1].strip(","),'%b').tm_mon
 
+    formatted_date = date[2] + "-" + month + "-" + date[0] + " 15:50:00"
 
-    query(DB.BAKESALE, "update bakesale set date = '" + date + "' where bakesale_id = " + bakesale_id)
+    query(DB.BAKESALE, "update bakesale set date = '" + formatted_date + "' where bakesale_id = " + bakesale_id)
     return jsonify({"response": 200, "success": True})
