@@ -5,8 +5,6 @@ from app.bakesale.admin.controllers import *
 
 from flask import g, redirect, url_for, render_template, request, jsonify
 
-import json
-
 # Explanation:
 # This file is a sub app for the elective enroll application
 # It is specified for students
@@ -42,7 +40,7 @@ def confirm():
     else:
         status_code = "D"
     query(DB.BAKESALE, "update bakesale set status_code = '" + status_code + "' where bakesale_id = " + bakesale_id)
-    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+    return jsonify({"response": 200, "success": True})
 
 @admin_mod.route('/set_date', methods=["GET", "POST"])
 def set_date():
@@ -50,5 +48,5 @@ def set_date():
     bakesale_id = data["bakesale_id"]
     date = data["date"]
 
-    query(DB.BAKESALE, "update bakesale set date = " + date + " where bakesale_id = " + bakesale_id)
-    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+    query(DB.BAKESALE, "update bakesale set date = '" + date + "' where bakesale_id = " + bakesale_id)
+    return jsonify({"response": 200, "success": True})

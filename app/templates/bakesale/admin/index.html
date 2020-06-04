@@ -54,6 +54,7 @@
         $('.modal').modal({
                 complete: function() {
                     let date = this.children(".datepicker").val();
+                    alert(date);
                     $.ajax({
                         url: "{{url_for('bakesale_admin.set_date')}}",
                         method: "POST",
