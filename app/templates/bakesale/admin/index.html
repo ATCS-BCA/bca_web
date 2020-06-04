@@ -27,8 +27,10 @@
                 <div id="m{{bakesale[0]}}" class="modal">
                     <div class="modal-content">
                         <h4>Select a date</h4>
-                        <input type="text" id="d{{bakesale[0]}}" class="datepicker">
-                        <label for="d{{bakesale[0]}}">Date</label>
+                        <div class="input-field">
+                            <label for="d{{bakesale[0]}}">Date</label>
+                            <input type="text" id="d{{bakesale[0]}}" class="datepicker">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <a href="#!" onclick="$(this).modal('close')" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
