@@ -52,7 +52,7 @@ def set_date():
 
     month = strptime(date[1].strip(","),'%B').tm_mon
 
-    formatted_date = date[2] + "-" + month + "-" + date[0] + " 15:50:00"
+    formatted_date = date[2] + "-" + str(month) + "-" + date[0] + " 15:50:00"
 
     query(DB.BAKESALE, "update bakesale set date = '" + formatted_date + "' where bakesale_id = " + bakesale_id)
     return jsonify({"response": 200, "success": True})
