@@ -50,7 +50,7 @@ def set_date():
     bakesale_id = data["bakesale_id"]
     date = data["date"].split(" ")
 
-    month = strptime(date[1].strip(","),'%b').tm_mon
+    month = strptime(date[1].strip(","),'%B').tm_mon
 
     formatted_date = date[2] + "-" + month + "-" + date[0] + " 15:50:00"
 
