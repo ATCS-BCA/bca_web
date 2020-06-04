@@ -27,7 +27,7 @@
                 <div id="m{{bakesale[0]}}" class="modal">
                     <div class="modal-content">
                         <h4>Select a date</h4>
-                        <input type="text" class="datepicker">
+                        <input type="text" id="d{{bakesale[0]}}" class="datepicker">
                     </div>
                     <div class="modal-footer">
                         <a href="#!" onclick="this.modal('close')" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
@@ -53,7 +53,7 @@
         // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
         $('.modal').modal({
                 complete: function() {
-                    let date = this.children(".datepicker").val();
+                    let date = $("#d" + this.attr("id").substring(1)).val();
                     alert(date);
                     $.ajax({
                         url: "{{url_for('bakesale_admin.set_date')}}",
