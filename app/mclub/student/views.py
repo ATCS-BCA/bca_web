@@ -20,18 +20,31 @@ def index():
     enroll_info = get_enrollment_time(g.user.get_grade_level())
 
     enrolled_clubs = []
-    available_clubs = []
+    wednesday_clubs = []
+    morning_clubs = get_mrng_clubs()
+
+    teachers_e = []
+    teachers_w = []
+    teachers_m = []
 
     if not enroll_info.start_time is None:
-        all_clubs = get_clubs()
+        all_clubs = get_wed_clubs()
         enrolled_clubs = get_enrolled_clubs(g.user.get_id(), enroll_info.course_year, enroll_info.tri_nbr)
 
         for club in all_clubs:
             if club.id not in [i.id for i in enrolled_clubs]:
-                available_clubs.append(club)
+                wednesday_clubs.append(club)
 
-    return render_template("mclub/student/index.html", clubs=available_clubs, enroll_info=enroll_info, enrolled_clubs=enrolled_clubs)
+        for club in enrolled_clubs:
+            teachers_e.append(get_club_teacher(club.id))
 
+        for club in wednesday_clubs:
+            teachers_w.append(get_club_teacher(club.id))
+
+        for club in morning_clubs:
+            teachers_m.append(get_club_teacher(club.id))
+
+    return render_template("mclub/student/index.html", enrolled_clubs=enrolled_clubs, teachers_e=teachers_e, wednesday_clubs=wednesday_clubs, teachers_w=teachers_w, morning_clubs=morning_clubs, teachers_m=teachers_m, enroll_info=enroll_info)
 
 @student_mod.route('/enroll/<int:club_id>', methods=['GET'])
 def enroll(club_id):
