@@ -7,6 +7,16 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/elective/teacher/create/main.css') }}">
 {% endblock %}
 
+{% block scripts %}
+    {{ super() }}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.modal').modal();
+            $('.collapsible').collapsible();
+        });
+    </script>
+{% endblock %}
+
 {% block content %}
 
     <div class="center-align">
@@ -30,15 +40,15 @@
             <div id="project_current">
                 <div class="row">
                     <div class="col s6 ">
-                        <h3 style="margin-top: 17px;">My Clubs</h3>
+                        <h3 style="margin-top: 17px;">My Wednesday Club</h3>
                     </div>
                 </div>
 
-                <table>
+                <table class="highlight centered">
                     <thead>
                         <tr>
                             <th><strong>Name</strong></th>
-                            <th><strong>Times</strong></th>
+                            <th><strong>Advisor</strong></th>
                             <th><strong>Room</strong></th>
                             <th><strong>Enrolled/Max</strong></th>
                         </tr>
@@ -47,7 +57,7 @@
                         {% for club in enrolled_clubs %}
                         <tr id="{{club.id}}" style="font-weight: 300;">
                             <td>{{ club.name }}</td>
-                            <td>{{ club.day }}</td>
+                            <td>{{ teachers_e[loop.index-1][0] + " " + teachers_e[loop.index-1][1] }}</td>
                             <td>{{ club.room_nbr }}</td>
                             <td>{{ club.enrollment_count }}/{{ club.max_nbr }}</td>
                             <td><a class="enroll btn red lighten-2" href="{{ url_for('mclub_student.drop', club_id=club.id)}}">Remove</a></td>
@@ -61,10 +71,10 @@
 
     <br>
 
-    <div id="club_list_container" class="main container white z-depth-2 col s12" style="padding: 0 25px;">
+    <div id="club_list_container" class="main container white z-depth-2" style="padding-right: 25px; padding-left: 25px;">
         <div>
             <br>
-            <h3 class="center-align">Available Clubs</h3>
+            <h3 class="center-align">Available Wednesday Clubs</h3>
         </div>
 
 
@@ -72,6 +82,53 @@
             <thead>
                 <tr>
                     <th><strong>Name</strong></th>
+                    <th><strong>Advisor</strong></th>
+                    <th><strong>Room</strong></th>
+                    <th><strong>Enrolled/Max</strong></th>
+                </tr>
+            </thead>
+
+
+            <tbody>
+                {% for club in wednesday_clubs %}
+                        <tr id="{{club.id}}" style="font-weight: 300;">
+                            <td>{{ club.name }}</td>
+                            <td>{{ teachers_w[loop.index-1][0] + " " + teachers_w[loop.index-1][1] }}</td>
+                            <td>{{ club.room_nbr }}</td>
+                            <td>{{ club.enrollment_count }}/{{ club.max_nbr }}</td>
+                            <td><a class="modal-trigger" href="#modal{{ club.id }}"><i class="material-icons" style="cursor:pointer">info_outline</i></a></td>
+                            {% if club.enrollment_count >= club.max_nbr or enrolled_clubs|length != 0 %}
+                                <td><a class="enroll btn green" disabled>Enroll</a></td>
+                            {% else %}
+                                <td><a class="enroll btn green" href="{{ url_for('mclub_student.enroll', club_id=club.id) }}">Enroll</a></td>
+                            {% endif %}
+                        </tr>
+
+                        <div id="modal{{ club.id }}" class="modal">
+                            <div class="modal-content">
+                                <h2>{{ club.name }}</h2>
+                                <p style="font-size: 18px">{{ club.desc }}</p>
+                            </div>
+                        </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <br>
+
+    <div id="morning_club_list_container" class="main container white z-depth-2" style="padding-right: 25px; padding-left: 25px;">
+        <div>
+            <br>
+            <h3 class="center-align">Available Morning Clubs</h3>
+        </div>
+
+
+        <table class="highlight centered">
+            <thead>
+                <tr>
+                    <th><strong>Name</strong></th>
+                    <th><strong>Advisor</strong></th>
                     <th><strong>Times</strong></th>
                     <th><strong>Room</strong></th>
                     <th><strong>Enrolled/Max</strong></th>
@@ -79,22 +136,27 @@
             </thead>
 
             <tbody>
-                {% for club in clubs %}
-                    <tr id="{{ club.id }}">
+                {% for club in morning_clubs %}
+                    <tr>
                             <td>{{ club.name }}</td>
+                            <td>{{ teachers_m[loop.index-1][0] + " " + teachers_m[loop.index-1][1] }}</td>
                             <td>{{ club.day }}</td>
                             <td>{{ club.room_nbr }}</td>
                             <td>{{ club.enrollment_count }}/{{ club.max_nbr }}</td>
-                            {% if club.enrollment_count >= club.max_nbr %}
-                                <td><a class="enroll btn green" disabled>Enroll</a></td>
-                            {% else %}
-                                <td><a class="enroll btn green" href="{{ url_for('mclub_student.enroll', club_id=club.id) }}">Enroll</a></td>
-                            {% endif %}
+                            <td><a class="modal-trigger" href="#modal{{ club.id }}"><i class="material-icons" style="cursor:pointer">info_outline</i></a></td>
                     </tr>
+
+                    <div id="modal{{ club.id }}" class="modal">
+                        <div class="modal-content">
+                            <h2>{{ club.name }}</h2>
+                            <p style="font-size: 18px">{{ club.desc }}</p>
+                        </div>
+                    </div>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+
 
 {% endblock %}
 

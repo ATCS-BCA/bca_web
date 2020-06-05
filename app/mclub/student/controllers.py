@@ -71,10 +71,35 @@ def is_club_full(club_id):
     return club_info[0] >= club_info[1]
 
 
-def get_clubs():
+def get_wed_clubs():
     clubs = query(DB.CLUBS, "SELECT club_id, name, advisor_id, day, room_nbr, description, max_nbr, enrollment_count"
                                         " FROM club " 
-                                        "WHERE club_type_cde = 3" # Displaying only Wednesday Afternoon Clubs
+                                        "WHERE club_type_cde = 3 " # Displaying only Wednesday Afternoon Clubs
+                                        "order by club_id")
+
+    all_clubs = []
+
+    for club in clubs:
+
+        club_id = club[0]
+        club_name = club[1]
+        club_advisor_id = club[2]
+        club_day = club[3]
+        club_room_nbr = club[4]
+        club_desc = club[5]
+        club_max_nbr = club[6]
+        club_enrollment_count = club[7]
+
+        c = Club(club_name, club_day, club_id, club_desc, club_max_nbr, club_room_nbr, club_enrollment_count)
+
+        all_clubs.append(c)
+
+    return all_clubs
+
+def get_mrng_clubs():
+    clubs = query(DB.CLUBS, "SELECT club_id, name, advisor_id, day, room_nbr, description, max_nbr, enrollment_count"
+                                        " FROM club " 
+                                        "WHERE club_type_cde <> 3" # Displaying morning clubs (Excluding Wednesday Clubs)
                                          " order by club_id")
 
     all_clubs = []
@@ -125,6 +150,17 @@ def get_enrolled_clubs(usr_id, year, tri):
         e_clubs.append(c)
 
     return e_clubs
+
+def get_club_teacher(club_id):
+    teacher_id = query(DB.CLUBS, "SELECT advisor_id "
+                            "FROM club "
+                            "WHERE club_id = %s ", [club_id])
+
+    full_name = query(DB.SHARED, "SELECT usr_first_name, usr_last_name "
+                            "FROM user "
+                            "WHERE usr_id=%s ", [teacher_id])
+
+    return full_name[0]
 
 # Returns the current school year formatted in "YEAR-END_YEAR" form
 def get_current_year():

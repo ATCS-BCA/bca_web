@@ -44,6 +44,6 @@ def get_current_date():
 
 # Temporary solution for getting the corresponding times for a section
 def get_next_bakesales():
-    result = query(DB.BAKESALE, "SELECT bakesale_id, group_name, group_size, teacher_id, requested_day, items_desc, date, status_code, DATE_FORMAT(date, '%M %D, %a.') as formatted_date FROM bakesale WHERE requested_day >= CURDATE() ORDER BY date LIMIT 5")
+    result = query(DB.BAKESALE, "SELECT bakesale_id, group_name, group_size, teacher_id, requested_day, items_desc, date, status_code, DATE_FORMAT(date, '%M %D, %a.') as formatted_date FROM bakesale WHERE date >= CURDATE() ORDER BY date LIMIT 5")
     return result
 
