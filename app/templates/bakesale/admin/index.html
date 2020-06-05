@@ -18,12 +18,24 @@
         {% for bakesale in bakesales %}
         <tr>
             <td> {{bakesale[1]}}</td>
-            <td> {{bakesale[8]}} </td>
+            <td> {{bakesale[4]}} </td>
             <td>
                 <p>
                     <input type="checkbox" id="{{bakesale[0]}}" onchange="confirm_bakesale('{{bakesale[0]}}', this.checked)">
                     <label for="{{bakesale[0]}}"></label>
                 </p>
+                <div id="m{{bakesale[0]}}" class="modal">
+                    <div class="modal-content">
+                        <h4>Select a date</h4>
+                        <div class="input-field">
+                            <label for="d{{bakesale[0]}}">Date</label>
+                            <input type="text" id="d{{bakesale[0]}}" class="datepicker">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" onclick="$(this).modal('close')" class="modal-action modal-close waves-effect waves-green btn-flat">Submit</a>
+                    </div>
+                </div>
             </td>
         </tr>
         {% endfor %}
@@ -31,16 +43,50 @@
 </table>
 
 <script>
+    $(document).ready(function(){
+        $('.datepicker').pickadate({
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 15, // Creates a dropdown of 15 years to control year,
+            today: 'Today',
+            clear: 'Clear',
+            close: 'Ok',
+            closeOnSelect: false,
+            container: 'body'
+        });
+
+        // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+        $('.modal').modal({
+                complete: function() {
+                    let bakesale_id = $(this).attr("id").substring(1);
+                    let date = $("#d" + bakesale_id).val();
+                    $.ajax({
+                        url: "{{url_for('bakesale_admin.set_date')}}",
+                        method: "POST",
+                        data: JSON.stringify({
+                            date: date,
+                            bakesale_id: bakesale_id
+                        }),
+                        contentType: 'application/json',
+                        dataType: "json"
+                    });
+                }
+            }
+        );
+    });
+
     function confirm_bakesale(bakesale_id, confirmed) {
         $.ajax({
             url: "{{url_for('bakesale_admin.confirm')}}",
             method: "POST",
-            data: {
+            data: JSON.stringify({
                 confirmed: confirmed,
                 bakesale_id: bakesale_id
-            },
-            success: function () {
-                alert("Succeeded")
+            }),
+            contentType: 'application/json',
+            dataType: "json"
+        }).done(function() {
+            if (confirmed) {
+                $("#m" + bakesale_id).modal("open");
             }
         });
     }

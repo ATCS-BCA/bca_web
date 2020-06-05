@@ -5,6 +5,8 @@ from app.bakesale.admin.controllers import *
 
 from flask import g, redirect, url_for, render_template, request, jsonify
 
+from time import strptime
+
 # Explanation:
 # This file is a sub app for the elective enroll application
 # It is specified for students
@@ -33,9 +35,24 @@ def index():
 
 @admin_mod.route('/confirm', methods=["GET", "POST"])
 def confirm():
-    bakesale_id = request.form.get("bakesale_id")
-    if request.form.get("confirmed") == "true":
+    data = request.get_json(force=True, silent=True)
+    bakesale_id = data["bakesale_id"]
+    if data["confirmed"]:
         status_code = "A"
     else:
         status_code = "D"
-    query(DB.BAKESALE, "update bakesale set status_code = '" + status_code + "', date = requested_date where bakesale_id = " + bakesale_id)
+    query(DB.BAKESALE, "update bakesale set status_code = '" + status_code + "' where bakesale_id = " + bakesale_id)
+    return jsonify({"response": 200, "success": True})
+
+@admin_mod.route('/set_date', methods=["GET", "POST"])
+def set_date():
+    data = request.get_json(force=True, silent=True)
+    bakesale_id = data["bakesale_id"]
+    date = data["date"].split(" ")
+
+    month = strptime(date[1].strip(","),'%B').tm_mon
+
+    formatted_date = date[2] + "-" + str(month) + "-" + date[0] + " 15:50:00"
+
+    query(DB.BAKESALE, "update bakesale set date = '" + formatted_date + "' where bakesale_id = " + bakesale_id)
+    return jsonify({"response": 200, "success": True})
