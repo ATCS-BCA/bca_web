@@ -27,12 +27,18 @@ def get_all_bakesales():
         teacher_id = bakesale[3]
         requested_day = bakesale[4]
         items_desc = bakesale[5]
+
         date = bakesale[6]
+        if (date is None):
+            formatted_date = "None";
+        else:
+            formatted_date = date.strftime("%m-%d")
+
         status_code = bakesale[7]
         description = bakesale[8]
         teacher_name = bakesale[9]
 
-        bakesale = Bakesale(bakesale_id, teacher_id, group_name, group_size, items_desc, date, teacher_name, description, requested_day)
+        bakesale = Bakesale(bakesale_id, teacher_id, group_name, group_size, items_desc, formatted_date, teacher_name, description, requested_day)
 
         e_bakesales.append(bakesale)
 
@@ -58,12 +64,18 @@ def get_teacher_bakesales(teacher_id):
         teacher_id = bakesale[3]
         requested_day = bakesale[4]
         items_desc = bakesale[5]
+
         date = bakesale[6]
+        if (date is None):
+            formatted_date = "None";
+        else:
+            formatted_date = date.strftime("%m-%d")
+
         status_code = bakesale[7]
         description = bakesale[8]
         teacher_name = bakesale[9]
 
-        bakesale = Bakesale(bakesale_id, teacher_id, group_name, group_size, items_desc, date, teacher_name, description, requested_day)
+        bakesale = Bakesale(bakesale_id, teacher_id, group_name, group_size, items_desc, formatted_date, teacher_name, description, requested_day)
 
         e_bakesales.append(bakesale)
 
