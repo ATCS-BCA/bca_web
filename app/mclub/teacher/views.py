@@ -44,7 +44,6 @@ def add():
 def rosters(id):
     return render_template("mclub/teacher/rosters.html", students=get_club_students(id))
 
-
 # also have to take into account the security issue of "verify this user can make changes to this club"
 @teacher_mod.route('/edit/<int:id>', methods=['GET', 'POST'])
 @register_breadcrumb(teacher_mod, ".edit", "Edit Club")
