@@ -138,3 +138,7 @@ def get_club_students(club_id):
 
     # return a list of all the students enrolled in a club + their information
     return students
+
+
+def delete_club(club_id):
+    return False
