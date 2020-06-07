@@ -121,15 +121,15 @@ def get_mrng_clubs():
 
     return all_clubs
 
-def get_enrolled_clubs(usr_id, year, tri):
+def get_enrolled_clubs(usr_id, year, tri_nbr):
 
     clubs = query(DB.CLUBS, "SELECT club_id, name, advisor_id, day, room_nbr, description, max_nbr, enrollment_count "
                     "FROM club " 
                     "WHERE course_year = %s "
-                    "AND tri = %s "
+                    "AND tri_nbr = %s "
                     "AND club_type_cde = 3 "
                     "AND club_id in (SELECT club_id FROM club_user_xref WHERE usr_id=%s) "
-                    "ORDER BY club_id", [str(year), str(tri), str(usr_id)])
+                    "ORDER BY club_id", [str(year), str(tri_nbr), str(usr_id)])
 
     # enrolled clubs
     e_clubs = []
