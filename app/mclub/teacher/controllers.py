@@ -78,8 +78,9 @@ def edit_club(club_id, name, day, room_nbr, description, max_nbr, type_cde):
 
 def add_club(name, max_nbr, type_cde, room_nbr, desc, advisor_id, day):
     insert(DB.CLUBS,
-           "INSERT INTO club (name, max_nbr, club_type_cde, room_nbr, description, advisor_id, day, enrollment_count ) "
-           "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (name, max_nbr, type_cde, room_nbr, desc, advisor_id, day, 0))
+           "INSERT INTO club (name, max_nbr, club_type_cde, room_nbr, description, advisor_id, day, enrollment_count, course_year, tri_nbr ) "
+           "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+           (name, max_nbr, type_cde, room_nbr, desc, advisor_id, day, 0, '2019-20', 3))
 
     return False
 
@@ -113,12 +114,12 @@ def get_club_day(club_id):
     return Day(d[0], d[1])
 
 
-def add_student(club_id, usr_id):
-    insert(DB.CLUBS, "INSERT INTO club_user_xref (usr_id, club_id) "
-                     "VALUES (%s, %s) "
-                     "ON DUPLICATE KEY", (usr_id, club_id))
-
-    return False
+# def add_student(club_id, usr_id):
+#     insert(DB.CLUBS, "INSERT INTO club_user_xref (usr_id, club_id) "
+#                      "VALUES (%s, %s) "
+#                      "ON DUPLICATE KEY", (usr_id, club_id))
+#
+#     return False
 
 
 def get_club_students(club_id):
@@ -140,5 +141,28 @@ def get_club_students(club_id):
     return students
 
 
+def remove_student(student_id, club_id):
+    delete(DB.CLUBS, 'DELETE FROM club_user_xref WHERE usr_id=%s AND club_id=%s', [student_id, club_id])
+
+    enrollment_count = query_one(DB.CLUBS, "SELECT enrollment_count "
+                                           "FROM club "
+                                           "WHERE club_id = %s", club_id)
+
+    query = "UPDATE club SET enrollment_count = %s WHERE club_id = %s"
+    params = [enrollment_count[0] - 1, club_id]
+    update(DB.CLUBS, query, params)
+
+    return False
+
+
 def delete_club(club_id):
+    students = get_club_students(club_id)
+    # remove all students from a club first
+    for student in students:
+        remove_student(student.usr_id, club_id)
+
+    # remove the club from the club & xref tables
+    delete(DB.CLUBS, 'DELETE FROM club WHERE club_id=%s', [club_id])
+    delete(DB.CLUBS, 'DELETE FROM club_user_xref WHERE club_id=%s', [club_id])
+
     return False

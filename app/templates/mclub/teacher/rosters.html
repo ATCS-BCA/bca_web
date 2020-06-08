@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/elective/admin/main.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='alertifyjs/css/alertify.min.css') }}"/>
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='alertifyjs/css/themes/default.css') }}"/>
-<!-- i am certain that we are stealing some styles from elective/admin BUT it's fine for now -->
+
 {% endblock %}
 
 {% block scripts %}
@@ -43,28 +43,33 @@
             </div>
         </div>
 
-        <!--            include a drop down menu at the top maybe WHOSE VALUE IS THE USR_ID OF THE STUDENT-->
-        <!--            and they should be able to add a student that way?? -->
-        <!--            removing a student should also be an option, that can be a little trash can icon + simply query -->
         <table class="highlight">
             <thead>
             <tr>
                 <th>Name</th>
-                <th>Grade</th>
+                <th>Year</th>
                 <th>Academy</th>
+                <th>Actions</th>
             </tr>
             </thead>
 
+            {% if students|length != 0: %}
             <tbody>
             {% for student in students %}
             <tr>
                 <td>{{student.first_name}} {{student.last_name}}</td>
                 <td>{{student.class_year}}</td>
                 <td>{{student.academy_cde}}</td>
+                <td><a href="{{ url_for('mclub_teacher.remove', id=club.id, student_id=student.usr_id) }}"><i
+                        class="material-icons">delete</i></a></td>
             </tr>
             {% endfor %}
+            {% endif %}
             </tbody>
         </table>
+        {% if students|length==0:%}
+        <p style="text-align:center; padding-top:15px;">No students have enrolled yet.</p>
+        {% endif%}
 
         <div class="center-align">
             <a class="waves-effect waves-light btn light-blue accent-2" style="margin-top:20px"
