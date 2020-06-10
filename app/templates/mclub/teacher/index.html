@@ -40,7 +40,7 @@
                     <a href="{{ url_for('mclub_teacher.edit', id=club.id) }}"><i class="material-icons"
                                                                                  style="cursor:pointer">mode_edit</i></a>
                     <a href="{{ url_for('mclub_teacher.rosters', id=club.id) }}"><i
-                            class="material-icons">person_add</i></a>
+                            class="material-icons">person</i></a>
                     <a href="{{ url_for('mclub_teacher.delete', id=club.id) }}"><i class="material-icons">delete</i></a>
                 </td>
             </tr>
@@ -59,7 +59,7 @@
 
         <!-- pls don't kill me for inline styling -->
         {% if clubs|length == 0: %}
-        <p style="text-align:center; padding-top:15px;">Click the button below to add a club.</p>
+        <p style="text-align:center; padding-top:2%;">Click the button below to add a club.</p>
         {% endif %}
 
         <!-- i forgot how to do styling please don't kill me!!!!! also i might change to a floating circular one-->
@@ -77,9 +77,10 @@
                     <div class="collapsible-body">You can use this app to add and manage clubs that you supervise.
                         <strong>If you are adding a club, please make sure it meets the requirements listed
                             below.</strong>
-                        <br>Click on the pencil icon to edit a club, the person icon to manage students that are
-                        enrolled
-                        in your club, or the "add club" button to make a new club.
+                        <br>The leftmost icon shows a summary of your club. Click on the pencil icon to edit a club, the
+                        person icon to manage students that are enrolled in your club, the "add club" button to make a
+                        new club,
+                        and the trash can to delete a club.
                         <br>If you have questions about clubs, please contact Stephen Kaplan at stekap@bergen.org. For
                         questions
                         about the website, please contact Bryan Respass at bryres@bergen.org.
@@ -89,9 +90,8 @@
                     <div class="collapsible-header"><i class="material-icons">brightness_low</i>Morning Clubs
                         Requirements
                     </div>
-                    <div class="collapsible-body">For morning clubs, you must have a student leader and at least
-                        3 students who are committed to participating. Please try to combine morning clubs if you
-                        have similar missions.
+                    <div class="collapsible-body">For morning clubs, you must have at least 3 students who are committed
+                        to participating. Please try to combine morning clubs if you have similar missions.
                     </div>
                 </li>
                 <li>

@@ -9,7 +9,6 @@ def get_clubs(usr_id):
                                         " FROM club "
                             " WHERE advisor_id = %s"
                             " order by club_id", [usr_id])
-    # probably have to get the id of the student who proposed the club
 
     all_clubs = []
 
@@ -33,6 +32,7 @@ def get_clubs(usr_id):
     return all_clubs
 
 
+# we ended up never using this :)
 def get_proposals():
     proposals = query(DB.CLUBS, "SELECT proposal_id, club_name, description, date_proposed"
                                 " FROM proposal "
@@ -62,18 +62,26 @@ def get_club(club_id):
         c = info[0]
         club = Club(c[1], c[3], c[4], c[0], c[6], c[7], c[5], c[8], c[2])
         # ^ i don't know why i did it this way i'm sorry
-        return club  # i also probs could've done this in like one line but i have 2 brain cells
+        return club  # i also probs could've done this in like one line but i have 2 brain cells so Sorry
 
     return None
 
 
-# removed advisor_id & enrollment_count from the parameters/query bc teacher can't change those
 def edit_club(club_id, name, day, room_nbr, description, max_nbr, type_cde):
     query = "UPDATE club SET name = %s, day = %s, room_nbr = %s, description = %s, max_nbr = %s, club_type_cde = %s WHERE club_id = %s"
     params = [name, day, room_nbr, description, max_nbr, type_cde, club_id]
     update(DB.CLUBS, query, params)
 
     return False
+
+
+"""
+to whoever is taking this over
+we hardcoded this for one (1) reason: we didn't want to break anything before our demo
+so... sorry
+
+
+"""
 
 
 def add_club(name, max_nbr, type_cde, room_nbr, desc, advisor_id, day):
@@ -85,7 +93,6 @@ def add_club(name, max_nbr, type_cde, room_nbr, desc, advisor_id, day):
     return False
 
 
-# where club.club_type = club_type.club_type_cde (idk i just thought of this and i'll probably have to use it)
 def get_club_days():
     types = query(DB.CLUBS, "select club_type_cde, club_type_name from club_type")
 
@@ -102,8 +109,6 @@ def get_type_name(type_cde):
     return type_name
 
 
-# get the type information for a specific club
-# i forgot the thing for if the parameter is null wait i'm thinking about dr racket Never mind
 def get_club_day(club_id):
     info = query(DB.CLUBS, "select club_type_cde, day"
                            "from club "
@@ -114,19 +119,11 @@ def get_club_day(club_id):
     return Day(d[0], d[1])
 
 
-# def add_student(club_id, usr_id):
-#     insert(DB.CLUBS, "INSERT INTO club_user_xref (usr_id, club_id) "
-#                      "VALUES (%s, %s) "
-#                      "ON DUPLICATE KEY", (usr_id, club_id))
-#
-#     return False
-
-
 def get_club_students(club_id):
     # get all the students enrolled in a club
     users = query(DB.CLUBS, "SELECT usr_id FROM club_user_xref WHERE club_id=%s", [club_id])
 
-    # get all the information of those students
+    # get all the info pertaining to those students
     students = []
     for user in users:
         info = query_one(DB.SHARED, "SELECT usr_id, usr_first_name, usr_last_name, usr_class_year, academy_cde "
@@ -134,7 +131,7 @@ def get_club_students(club_id):
                                     "WHERE usr_type_cde='STD' "
                                     "AND usr_id=%s", [user[0]])
 
-        # (essentially) combine all their info into one object
+        # combine all their info into one object
         students.append(Student(info[0], info[1], info[2], info[3], info[4]))
 
     # return a list of all the students enrolled in a club + their information
