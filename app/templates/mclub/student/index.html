@@ -117,7 +117,8 @@
 
     <br>
 
-    <div id="morning_club_list_container" class="main container white z-depth-2" style="padding-right: 25px; padding-left: 25px;">
+    <div id="morning_club_list_container" class="main container white z-depth-2" style="padding-right: 25px; padding-left: 25px; min-height: 100%;">
+
         <div>
             <br>
             <h3 class="center-align">Available Morning Clubs</h3>
@@ -131,7 +132,6 @@
                     <th><strong>Advisor</strong></th>
                     <th><strong>Times</strong></th>
                     <th><strong>Room</strong></th>
-                    <th><strong>Enrolled/Max</strong></th>
                 </tr>
             </thead>
 
@@ -142,7 +142,6 @@
                             <td>{{ teachers_m[loop.index-1][0] + " " + teachers_m[loop.index-1][1] }}</td>
                             <td>{{ club.day }}</td>
                             <td>{{ club.room_nbr }}</td>
-                            <td>{{ club.enrollment_count }}/{{ club.max_nbr }}</td>
                             <td><a class="modal-trigger" href="#modal{{ club.id }}"><i class="material-icons" style="cursor:pointer">info_outline</i></a></td>
                     </tr>
 
@@ -158,6 +157,7 @@
     </div>
 <br>
 
+    <br>
 
 {% endblock %}
 
