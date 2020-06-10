@@ -34,7 +34,7 @@ def add():
             add_club(club_name, club_max_nbr, club_type_cde, club_room_nbr, club_desc, g.user.get_id(),
                      get_type_name(club_type_cde))
 
-        return render_template("mclub/teacher/index.html", clubs=get_clubs(g.user.get_id()))
+        return redirect(url_for('mclub_teacher.index'))
 
     return render_template("mclub/teacher/add.html", days=get_club_days())
 
@@ -42,7 +42,7 @@ def add():
 @teacher_mod.route('/rosters/<int:id>', methods=['GET', 'POST'])
 @register_breadcrumb(teacher_mod, ".rosters", "Student Roster")
 def rosters(id):
-    return render_template("mclub/teacher/rosters.html", students=get_club_students(id))
+    return render_template("mclub/teacher/rosters.html", students=get_club_students(id), club=get_club(id))
 
 # also have to take into account the security issue of "verify this user can make changes to this club"
 @teacher_mod.route('/edit/<int:id>', methods=['GET', 'POST'])
@@ -63,7 +63,7 @@ def edit(id):
                 edit_club(id, name, get_type_name(type_cde), room_nbr, description, max_nbr, type_cde)
 
             # send back to the index page after making changes
-            return render_template("mclub/teacher/index.html", clubs=get_clubs(g.user.get_id()))
+            return redirect(url_for('mclub_teacher.index'))
 
         else:
             # if simply trying to see the edit page, not submitting changes
@@ -71,3 +71,19 @@ def edit(id):
 
     else:  # error w/ the club
         redirect(url_for('mclub_teacher.index'))
+
+
+# this is for deleting a club
+@teacher_mod.route('/delete/<int:id>', methods=['GET'])
+def delete(id):
+    # verify that this is the user's club (they have permission)
+    if get_club(id).advisor_id == g.user.get_id():
+        delete_club(id)
+    return redirect(url_for('mclub_teacher.index'))
+
+
+# this is for removing a student from a club
+@teacher_mod.route('/remove_student/<int:id>/<int:student_id>', methods=['GET'])
+def remove(id, student_id):
+    remove_student(student_id, id)
+    return redirect(url_for('mclub_teacher.rosters', id=id))

@@ -43,7 +43,6 @@ def index():
 
         for club in morning_clubs:
             teachers_m.append(get_club_teacher(club.id))
-
     return render_template("mclub/student/index.html", enrolled_clubs=enrolled_clubs, teachers_e=teachers_e, wednesday_clubs=wednesday_clubs, teachers_w=teachers_w, morning_clubs=morning_clubs, teachers_m=teachers_m, enroll_info=enroll_info)
 
 @student_mod.route('/enroll/<int:club_id>', methods=['GET'])
