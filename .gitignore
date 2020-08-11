@@ -110,6 +110,7 @@ venv.bak/
 
 # config file
 /config.py
+/config_dev.py
 
 # test folder
 app/elective/tests
