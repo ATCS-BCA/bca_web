@@ -1,4 +1,5 @@
-from app.db import DB, query
+from config import DB
+from app.db import query
 
 from app.dashboard.models import *
 

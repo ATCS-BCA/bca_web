@@ -1,28 +1,16 @@
 from app import mysql
-from enum import Enum
-
-
-class DB(Enum):
-    SHARED = "atcsdevb_dev_shared"
-    CAREER_DAY = "atcsdevb_dev_career_day"
-    FIELD_DAY = "actcsdevb_dev_field_day"
-    GRADE_REQ = "atcsdevb_dev_grade_req"
-    IDA = "atcsdevb_dev_ida"
-    OFF_HR_ELECTIVES = "atcsdevb_dev_off_hour_electives"
-    PROCTORING = "actsdevb_dev_proctoring"
-    PROJECTS = "atcsdevb_dev_projects"
-    SEN_EXP = "atcsdevb_dev_senexp"
-    ELECTIVE="atcsdevb_dev_electives"
-    BAKESALE="atcsdevb_dev_bake_sale"
-    CLUBS="atcsdevb_dev_clubs"
-
-    def __str__(self):
-        return str(self.value)
+from config import Config
 
 # Executes the statemet and then returns the result
 # Statement - SQL Query
 # Vars - List of variables in Query to prevent SQL Injection
-def query(db, statement, vars="", display=False):
+def query(db, statement, vars="", dictResults=False):
+    curtype = pymysql.cursors.DictCursor
+    if (dictResults):
+        curtype = mysql.get_db().DictCursor
+
+    cur = mysql.get_db().cursor(curtype)
+
     cur = mysql.get_db().cursor()
     use_db(cur, db)
 
@@ -31,7 +19,7 @@ def query(db, statement, vars="", display=False):
     else:
         cur.execute(statement)
 
-    if display:
+    if Config.SHOW_QUERIES:
         log_print("QUERY", db, statement, vars)
 
     result = cur.fetchall()
@@ -40,7 +28,7 @@ def query(db, statement, vars="", display=False):
 
 
 # only searches for one return option/value
-def query_one(db, statement, vars="", display=False):
+def query_one(db, statement, vars=""):
     cur = mysql.get_db().cursor()
     use_db(cur, db)
 
@@ -49,12 +37,12 @@ def query_one(db, statement, vars="", display=False):
     else:
         cur.execute(statement)
 
-    if display:
+    if Config.SHOW_QUERIES:
         log_print("QUERY", db, statement, vars)
     return cur.fetchone()
 
 
-def insert(db, statement, vars, display=False):
+def insert(db, statement, vars):
     cur = mysql.get_db().cursor()
     use_db(cur, db)
 
@@ -62,10 +50,10 @@ def insert(db, statement, vars, display=False):
 
     cur.connection.commit()
 
-    if display:
+    if Config.SHOW_QUERIES:
         log_print("INSERT", db, statement, vars)
 
-def insertmany(db, statement, data, display=False):
+def insertmany(db, statement, data):
     cur = mysql.get_db().cursor()
     use_db(cur, db)
 
@@ -73,7 +61,7 @@ def insertmany(db, statement, data, display=False):
 
     cur.connection.commit()
 
-    if display:
+    if Config.SHOW_QUERIES:
         log_print("INSERT", db, statement, data)
 
 

@@ -1,4 +1,4 @@
-$(".button-collapse").sideNav();
+$(".button-collapse").sidenav();
 
 // Commented out for now - if necessary make the js more specific because this breaks other people's code
 // $("a").click(function() {

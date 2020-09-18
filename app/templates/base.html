@@ -9,13 +9,12 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/materialize.min.css') }}"/>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/icons.css') }}"/>
         <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
-        <link href="https://use.fontawesome.com/668f9b8679.css" media="all" rel="stylesheet">
-
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='fonts/fontawesome-free-5.0.8/web-fonts-with-css/css/fontawesome-all.css')}}"/>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Palanquin:100,300,400,500,600,700">
     {% endblock %}
 
     {% block scripts %}
-        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.5.1.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='jquery-ui/jquery-ui.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/materialize.min.js') }}"></script>
 
@@ -46,6 +45,13 @@
 {% block footer %}
     <script src="{{ url_for('static', filename='js/jquery.easing.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/jquery.plusanchor.min.js') }}"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var elems = document.querySelectorAll(".sidenav");
+            var instances = M.Sidenav.init(elems, {preventScrolling: true});
+        });
+    </script>
 {% endblock %}
 
 </body>

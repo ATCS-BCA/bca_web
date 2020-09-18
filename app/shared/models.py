@@ -1,5 +1,6 @@
 from flask import Blueprint
-from app.db import DB, query, query_one
+from config import DB
+from app.db import query, query_one
 
 # A simple user class holding a user's id for authentication with flask_login
 # After authentication, this class will be available in all requests
@@ -52,10 +53,11 @@ class User(object):
         return userRoles
 
     def get_role(self, app_cde):
-        role = query(DB.SHARED, 'SELECT usr_role_cde '
+        role = query_one(DB.SHARED, 'SELECT usr_role_cde '
                                 'FROM role_application_user_xref '
                                 'WHERE usr_id=%s '
                                 'AND app_cde=%s', [self.__usr_id__, app_cde])
+
         if role:
             return role[0]
         else:

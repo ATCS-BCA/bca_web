@@ -1,12 +1,13 @@
-from app.db import DB, insert, insertmany, query_one, query, delete, update
+from config import DB, Config
+from app.db import insert, insertmany, query_one, query, delete, update
 from app.mclub.teacher.models import *
 from app.shared.models import User
 
 
 def get_clubs(usr_id):
     clubs = query(DB.CLUBS,
-                  "SELECT club_id, name, advisor_id, day, club_type_cde, room_nbr, description, max_nbr, enrollment_count"
-                                        " FROM club "
+                  "SELECT club_id, name, advisor_id, day, club_type_cde, room, description, max_nbr, enrollment_count"
+                            " FROM club "
                             " WHERE advisor_id = %s"
                             " order by club_id", [usr_id])
 
@@ -53,16 +54,18 @@ def get_proposals():
 
 
 def get_club(club_id):
-    info = query(DB.CLUBS,
-                 "SELECT club_id, name, advisor_id, day, club_type_cde, room_nbr, description, max_nbr, enrollment_count"
-                           " FROM club" 
-                           " WHERE club_id = %s ", [club_id])
+    c = query_one(DB.CLUBS,
+                 "SELECT club_id, name, advisor_id, club_type_name, morning_club_flg, room, description, max_nbr, enrollment_count"
+                           " FROM club, club_type "
+                           " WHERE club.club_type_cde = club_type.club_type_cde "
+                           " AND club_id = %s ", [club_id])
 
-    if info:
-        c = info[0]
+    if c:
         club = Club(c[1], c[3], c[4], c[0], c[6], c[7], c[5], c[8], c[2])
-        # ^ i don't know why i did it this way i'm sorry
-        return club  # i also probs could've done this in like one line but i have 2 brain cells so Sorry
+        return club
+
+
+    def __init__(self, name, day, type_cde, id, description, max_nbr, room_nbr, enrollment_count, advisor_id):
 
     return None
 
@@ -75,26 +78,18 @@ def edit_club(club_id, name, day, room_nbr, description, max_nbr, type_cde):
     return False
 
 
-"""
-to whoever is taking this over
-we hardcoded this for one (1) reason: we didn't want to break anything before our demo
-so... sorry
-
-
-"""
-
-
 def add_club(name, max_nbr, type_cde, room_nbr, desc, advisor_id, day):
     insert(DB.CLUBS,
-           "INSERT INTO club (name, max_nbr, club_type_cde, room_nbr, description, advisor_id, day, enrollment_count, course_year, tri_nbr ) "
-           "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-           (name, max_nbr, type_cde, room_nbr, desc, advisor_id, day, 0, '2019-20', 3))
+           "INSERT INTO club (name, max_nbr, club_type_cde, room, description, advisor_id, enrollment_count, course_year, tri_nbr ) "
+           "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+           (name, max_nbr, type_cde, room_nbr, desc, advisor_id, 0,
+            Config.CLUBS_CURRENT_COURSE_YEAR, Config.CLUBS_CURRENT_TRIMESTER))
 
     return False
 
 
 def get_club_days():
-    types = query(DB.CLUBS, "select club_type_cde, club_type_name from club_type")
+    types = query(DB.CLUBS, "select club_type_cde, club_type_name from club_type order by sort_order")
 
     club_types = []
     for i in types:

@@ -1,6 +1,6 @@
 from app.shared.models import NestableBlueprint
 
-mclub_mod = NestableBlueprint('mclub', __name__, url_prefix='/morning_clubs')
+mclub_mod = NestableBlueprint('mclub', __name__, url_prefix='/clubs')
 
 import app.mclub.views
 

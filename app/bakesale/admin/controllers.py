@@ -1,4 +1,5 @@
-from app.db import DB, insert, insertmany, query_one, query, delete, update
+from config import DB
+from app.db import insert, insertmany, query_one, query, delete, update
 
 from app.bakesale.admin.models import Bakesale
 

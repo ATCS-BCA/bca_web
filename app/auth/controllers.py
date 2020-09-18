@@ -1,5 +1,6 @@
 from app import app
-from app.db import DB, query_one
+from config import DB
+from app.db import query_one
 from app.shared.models import User
 
 from werkzeug.contrib.cache import SimpleCache
